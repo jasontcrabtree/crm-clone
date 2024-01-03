@@ -25,4 +25,3 @@ jobs:
       - name: Run Jest tests
         run: npm run jest
         working-directory: ./frontend
-g
