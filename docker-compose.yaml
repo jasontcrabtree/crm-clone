@@ -7,6 +7,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
     environment:
       - NEXT_PUBLIC_BACKEND_URL=http://backend:5000
     depends_on:
@@ -18,3 +21,5 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5000:5000"
+    volumes:
+      - ./backend:/app

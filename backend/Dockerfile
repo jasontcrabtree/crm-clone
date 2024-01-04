@@ -1,17 +1,19 @@
-# Use the official image as a parent image
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
+# Dockerfile for .NET
+
+# Use the official SDK image for building
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS development
+
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
 COPY *.csproj ./
 RUN dotnet restore
 
-# Copy everything else and build
+# Copy everything else
 COPY . ./
-RUN dotnet publish -c Release -o out
 
-# Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:5.0
-WORKDIR /app
-COPY --from=build-env /app/out .
-ENTRYPOINT ["dotnet", "backend.dll"]
+# Expose the port the app runs on
+EXPOSE 5000
+
+# Start the application with dotnet watch for live reloading
+CMD ["dotnet", "watch", "run"]

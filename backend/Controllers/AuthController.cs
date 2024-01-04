@@ -7,8 +7,8 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-[Route("api/[controller]")]
 [ApiController]
+[Route("api/auth")]
 public class AuthController : ControllerBase
 {
     private readonly IConfiguration _configuration;
@@ -20,7 +20,35 @@ public class AuthController : ControllerBase
         _context = context;
     }
 
+    [HttpPost("register")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Register([FromBody] RegisterModel model)
+    {
+        if (await _context.Users.AnyAsync(u => u.Username == model.Username))
+        {
+            return BadRequest("Username already exists.");
+        }
+
+        var user = new User { Username = model.Username };
+        var hasher = new PasswordHasher<User>();
+        user.Password = hasher.HashPassword(user, model.Password);
+
+        _context.Users.Add(user);
+        try
+        {
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "User registered successfully" });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, "An error occurred while registering the user: " + ex.Message);
+        }
+    }
+
     [HttpPost("login")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Login([FromBody] LoginModel model)
     {
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == model.Username);
@@ -41,24 +69,9 @@ public class AuthController : ControllerBase
         return Ok(new { Token = token });
     }
 
-    [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterModel model)
-    {
-        var user = new User { Username = model.Username };
-
-        var hasher = new PasswordHasher<User>();
-        user.Password = hasher.HashPassword(user, model.Password);
-
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync();
-
-        return Ok(new { message = "User registered successfully" });
-    }
-
     private string GenerateJwtToken(string username)
     {
         var jwtKey = _configuration["Jwt:Key"];
-
         if (string.IsNullOrEmpty(jwtKey))
         {
             throw new InvalidOperationException("JWT key is not configured correctly.");

@@ -1,23 +1,44 @@
 using Microsoft.EntityFrameworkCore;
 using backend.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
-// START Add services to the builder
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// Configure JWT Authentication and add Authorization
+var jwtKey = builder.Configuration["Jwt:Key"];
+if (string.IsNullOrEmpty(jwtKey))
+{
+    throw new InvalidOperationException("JWT key is not configured correctly.");
+}
+var key = Encoding.ASCII.GetBytes(jwtKey);
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.RequireHttpsMetadata = false; // Set to true in production
+        options.SaveToken = true;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    });
+
+builder.Services.AddAuthorization();
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var dbPassword = builder.Configuration["DbPassword"];
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") + $"Password={dbPassword};";
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(connectionString));
-// END Add services to the builder
-
-
-// Start app configuration
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -28,8 +49,16 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseRouting();
+
+app.UseAuthentication(); // Ensure this is before UseAuthorization
+app.UseAuthorization(); // Add UseAuthorization
+
+app.MapControllers();
+
 app.UseMiddleware<ApiMiddleware>();
 
+// Define your endpoints here
 var summaries = new[]
 {
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -47,9 +76,10 @@ app.MapGet("/weatherforecast", () =>
         .ToArray();
     return forecast;
 })
+.RequireAuthorization() // Require authorization for this endpoint
 .WithName("GetWeatherForecast")
 .WithOpenApi();
-// END app configuration
 
-// RUN PROGRAM
 app.Run();
+
+
