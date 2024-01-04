@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using backend.Models;
+
+// START Add services to the builder
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,6 +9,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var dbPassword = builder.Configuration["DbPassword"];
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") + $"Password={dbPassword};";
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(connectionString));
+// END Add services to the builder
+
+
+// Start app configuration
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -15,6 +28,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseMiddleware<ApiMiddleware>();
 
 var summaries = new[]
 {
@@ -23,7 +37,7 @@ var summaries = new[]
 
 app.MapGet("/weatherforecast", () =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
+    var forecast = Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
         (
             DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
@@ -35,10 +49,7 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast")
 .WithOpenApi();
+// END app configuration
 
+// RUN PROGRAM
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
