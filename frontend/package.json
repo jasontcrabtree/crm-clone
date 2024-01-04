@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest",
-    "test:watch": "jest --watch",
+    "test:watch": "jest --watchAll",
     "dev-all": "npm-run-all --parallel dev test:watch"
   },
   "dependencies": {

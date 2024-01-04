@@ -1,19 +1,19 @@
 # Dockerfile for .NET
 
-# Use the official SDK image for building
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS development
-
+# Use the official .NET 8 SDK image as a parent image
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
-COPY *.csproj ./
+COPY backend.csproj ./
 RUN dotnet restore
 
-# Copy everything else
+# Copy everything else and build
 COPY . ./
+RUN dotnet publish -c Release -o out
 
-# Expose the port the app runs on
-EXPOSE 5000
-
-# Start the application with dotnet watch for live reloading
-CMD ["dotnet", "watch", "run"]
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /app
+COPY --from=build-env /app/out .
+ENTRYPOINT ["dotnet", "backend.dll"]
