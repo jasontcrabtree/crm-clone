@@ -47,6 +47,8 @@ next-env.d.ts
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
 */backend/Migrations/*
+*/backend/appsettings.*.json
+*/backend/appsettings.Development.json
 
 # User-specific files
 *.rsuser
