@@ -12,22 +12,28 @@ public class ApiMiddleware
 
     public async Task InvokeAsync(HttpContext context)
     {
-        if (!context.Request.Headers.TryGetValue(APIKEYNAME, out var extractedApiKey))
-        {
-            context.Response.StatusCode = 401; // Unauthorized
-            context.Response.ContentType = "application/json";
-            var response = new { error = "API Key is missing" };
-            await context.Response.WriteAsJsonAsync(response);
-            return;
-        }
+        // List of paths that are excluded from API Key check
+        var excludedPaths = new[] { "/", "/weatherforecast" };
 
-        if (!_apiKey.Equals(extractedApiKey))
+        if (!excludedPaths.Any(path => context.Request.Path.StartsWithSegments(path, StringComparison.OrdinalIgnoreCase)))
         {
-            context.Response.StatusCode = 401; // Unauthorized
-            context.Response.ContentType = "application/json";
-            var response = new { error = "Unauthorized client" };
-            await context.Response.WriteAsJsonAsync(response);
-            return;
+            if (!context.Request.Headers.TryGetValue(APIKEYNAME, out var extractedApiKey))
+            {
+                context.Response.StatusCode = 401; // Unauthorized
+                context.Response.ContentType = "application/json";
+                var response = new { error = "API Key is missing" };
+                await context.Response.WriteAsJsonAsync(response);
+                return;
+            }
+
+            if (!_apiKey.Equals(extractedApiKey))
+            {
+                context.Response.StatusCode = 401; // Unauthorized
+                context.Response.ContentType = "application/json";
+                var response = new { error = "Unauthorized client" };
+                await context.Response.WriteAsJsonAsync(response);
+                return;
+            }
         }
 
         await _next(context);
