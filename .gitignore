@@ -49,6 +49,9 @@ next-env.d.ts
 */backend/Migrations/*
 */backend/appsettings.*.json
 */backend/appsettings.Development.json
+*/appsettings.Development.json
+*/*/appsettings.Development.json
+
 
 # User-specific files
 *.rsuser
