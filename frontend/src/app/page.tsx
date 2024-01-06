@@ -1,10 +1,9 @@
-import Link from 'next/link'
-
-export default function Page() {
+const Page = () => {
   return (
-    <div>
-      <h1 >CRM Clone</h1>
-      <Link href="/about">About</Link>
+    <div className='p-4'>
+      <h1>Login Landing Page</h1>
     </div>
   )
 }
+
+export default Page;
