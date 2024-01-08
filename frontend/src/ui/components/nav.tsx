@@ -1,7 +1,10 @@
+'use client';
+
+import logoutSession from "@/lib/actions/logout-session";
+import { AuthProps } from "@/lib/types/auth";
 import Link from "next/link"
 
-const AppNav = () => {
-
+const AppNav = ({ session }: AuthProps) => {
     return (
         <nav>
             <ul>
@@ -9,12 +12,24 @@ const AppNav = () => {
                     <Link href="/">
                         Home
                     </Link>
-                    <Link href="/">
-                        Login
-                    </Link>
-                    <Link href="/">
-                        Register
-                    </Link>
+                    {session
+                        ? (
+                            <button onClick={() => {
+                                logoutSession();
+                            }}>
+                                Log Out
+                            </button>
+                        ) : (
+                            <>
+                                <Link href="/login">
+                                    Login
+                                </Link>
+                                <Link href="/register">
+                                    Register
+                                </Link>
+                            </>
+                        )
+                    }
                 </li>
             </ul>
         </nav>

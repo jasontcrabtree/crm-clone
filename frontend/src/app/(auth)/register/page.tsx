@@ -7,8 +7,8 @@ const UserRegistration = () => {
     return (
         <div>Login
             <form action={registerUser}>
-                <input type="text" name="userName" id="userName" />
-                <input type="password" name="userPassword" id="userPassword" />
+                <input type="text" name="username" id="username" />
+                <input type="password" name="password" id="password" />
                 <button type="submit">Register</button>
             </form>
         </div>
