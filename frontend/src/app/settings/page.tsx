@@ -1,6 +1,6 @@
 'use client'
 
-import { AuthContext } from "@/ui/components/auth-provider";
+import { AuthContext } from "@/ui-system/components/auth-provider";
 import { useContext } from "react";
 
 const Settings = () => {

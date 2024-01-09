@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import './../ui/globals.css'
-import AuthProvider from '@/ui/components/auth-provider'
-import AppNav from '@/ui/components/nav'
+import '../ui-system/globals.css'
+import AuthProvider from '@/ui-system/components/auth-provider'
+import AppNav from '@/ui-system/components/nav'
 import { cookies } from 'next/headers'
+import TodoList from '@/ui-system/components/todo-list'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,8 +19,8 @@ const getAuthSession = () => {
 }
 
 export const metadata: Metadata = {
-  title: 'CRM Clone App',
-  description: '',
+  title: 'Bondbridge',
+  description: 'CRM clone project built with Next.js, App Router, Tailwind CSS, and a .Net WebAPI backend',
 }
 
 const RootLayout = ({
@@ -32,9 +33,10 @@ const RootLayout = ({
   return (
     <AuthProvider session={session}>
       <html lang="en">
-        <body className={`${inter.className} p-12 bg-gray-100`}>
+        <body className={`${inter.className} bg-white flex sm:flex-row flex-col`}>
           <AppNav session={session} />
           {children}
+          <TodoList />
         </body>
       </html>
     </AuthProvider>

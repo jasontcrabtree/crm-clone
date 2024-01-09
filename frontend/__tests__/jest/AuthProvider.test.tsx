@@ -1,5 +1,5 @@
 import { render, act, screen } from '@testing-library/react';
-import AuthProvider, { AuthContext } from '@/ui/components/auth-provider';
+import AuthProvider, { AuthContext } from '@/ui-system/components/auth-provider';
 import React, { useContext } from 'react';
 
 describe('AuthProvider', () => {
