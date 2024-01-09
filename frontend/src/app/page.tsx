@@ -18,7 +18,7 @@ export const coreEntities = ['Contacts', 'Organisations', 'Actions', 'Connection
 
 const Page = () => {
   return (
-    <CorePageLayout children={
+    <CorePageLayout>
       <>
         <div className="bg-yellow-100 w-full grid grid-cols-3 gap-1 p-1">
           {coreEntities.map((entity, key) => {
@@ -35,7 +35,7 @@ const Page = () => {
           Action slot
         </div>
       </>
-    } />
+    </CorePageLayout>
   )
 }
 
