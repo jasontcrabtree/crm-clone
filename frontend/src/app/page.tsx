@@ -23,11 +23,11 @@ const Page = () => {
         <div className="bg-yellow-100 w-full grid grid-cols-3 gap-1 p-1">
           {coreEntities.map((entity, key) => {
             return (
-              <EntityCard key={key} children={
+              <EntityCard key={key}>
                 <div className="bg-white p-2">
                   {entity}
                 </div>
-              } />
+              </EntityCard>
             )
           })}
         </div>
