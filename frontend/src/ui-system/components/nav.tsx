@@ -35,6 +35,7 @@ const AppNav = ({ session, user }: AuthProps) => {
                 <li>
                     <NavLinkitem href="/">
                         Actions
+
                     </NavLinkitem>
                 </li>
                 <li>
