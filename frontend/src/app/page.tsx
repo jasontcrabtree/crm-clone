@@ -15,23 +15,15 @@ export const coreEntities = ['Contacts', 'Organisations', 'Interactions', 'Conne
 
 export async function fetchWeather() {
   try {
-    // Artificially delay a reponse for demo purposes.
-    // Don't do this in real life :)
-
-    console.log('Fetching revenue data...');
-    await new Promise(resolve => setTimeout(resolve, 3000));
-
     const data = await fetch('https://crm-clone.azurewebsites.net/weatherforecast')
       .then(response => response.json())
       .then(response => response)
       .catch(err => console.error(err));
 
-    console.log('Data fetch complete after 3 seconds.');
-
     return data;
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch revenue data.');
+    throw new Error(String(error));
   }
 }
 
@@ -41,7 +33,7 @@ const ShowWeather = async () => {
   console.log('weather', weather)
 
   return (
-    <div className="bg-yellow-100 w-full grid grid-cols-3 gap-1 p-1">
+    <div className="bg-yellow-100 w-full h-full grid grid-cols-3 gap-1 p-1">
       {coreEntities.map((entity, key) => {
         return (
           <EntityCard key={key}>
@@ -58,9 +50,12 @@ const ShowWeather = async () => {
 const Page = () => {
   return (
     <>
-      <Suspense fallback={<DashboardSkeleton />}>
-        <ShowWeather />
-      </Suspense>
+      <div className="flex flex-col w-full h-full">
+        <h1 className="bg-white w-full text-xl text-indigo-900 px-4 py-10  font-semibold">Dashboard</h1>
+        <Suspense fallback={<DashboardSkeleton />}>
+          <ShowWeather />
+        </Suspense>
+      </div>
     </>
   )
 }

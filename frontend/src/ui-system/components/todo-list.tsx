@@ -2,10 +2,10 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 
 const TodoList = () => {
     return (
-        <div className="static">
+        <div className="relative">
             <AlertDialog>
-                <AlertDialogTrigger className="absolute bg-green-300 border-green-400  text-sm font-semibold top-4 right-4">Open tasks</AlertDialogTrigger>
-                <AlertDialogContent className="fixed inset-0 max-h-full z-50 bg-white p-16 overflow-y-auto">
+                <AlertDialogTrigger className="absolute bg-green-300 border-green-400  text-sm font-semibold top-4 right-4 w-[120px]">Open tasks</AlertDialogTrigger>
+                <AlertDialogContent className="top-[55%] z-50 bg-white p-16 overflow-y-auto fixed max-h-full">
                     <AlertDialogCancel className="absolute bg-red-300 border-red-400  text-sm font-semibold top-4 right-4 z-10">Close tasks</AlertDialogCancel>
                     <div>
                         <h2 className="text-xl font-semibold text-indigo-700">
@@ -79,9 +79,6 @@ const TodoList = () => {
                             </li>
                         </ol>
                     </div>
-
-
-
                 </AlertDialogContent>
             </AlertDialog>
         </div>
