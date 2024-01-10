@@ -29,7 +29,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/ui-system/components/icons/contacts-icon.tsx"
+    "src/ui-system/components/icons/contact-icon.tsx"
   ],
   "exclude": ["node_modules"]
 }
