@@ -28,13 +28,13 @@ const RootLayout = ({
 }: {
   children: React.ReactNode
 }) => {
-  const { session } = getAuthSession();
+  const { session, user } = getAuthSession();
 
   return (
     <AuthProvider session={session}>
       <html lang="en">
         <body className={`${inter.className} bg-white flex sm:flex-row flex-col`}>
-          <AppNav session={session} />
+          <AppNav user={user} session={session} />
           {children}
           <TodoList />
         </body>
