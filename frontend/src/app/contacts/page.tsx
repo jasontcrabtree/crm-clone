@@ -1,7 +1,9 @@
+import CustomLink from "@/ui-system/components/custom-link";
+
 const Page = () => {
 
     return (
-        <div className="w-full bg-zinc-100">
+        <div className="w-full bg-zinc-50">
             <div>
                 Contact stats
             </div>
@@ -13,7 +15,11 @@ const Page = () => {
             </div>
             <div>
                 <h2>Contact List</h2>
-                <div></div>
+                <div>
+                    <CustomLink href="/contacts/matthew-boyd-3e08243280rf">
+                        Contact 1
+                    </CustomLink>
+                </div>
             </div>
         </div>
     )

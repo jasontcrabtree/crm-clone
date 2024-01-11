@@ -3,9 +3,9 @@ const Page = ({ params }: { params: { id: string } }) => {
     const { id } = params;
 
     return (
-        <div className="w-full bg-zinc-50">
+        <div className="w-full bg-zinc-100">
             <h1>
-                Contact {id}
+                Support {id}
             </h1>
         </div>
     )

@@ -16,7 +16,14 @@ const HistoryProvider = ({ children }: { children: React.ReactNode }) => {
     const [history, setHistory] = useState<string[]>([]);
 
     const updateHistory = (historyItem: string) => {
-        setHistory(prevState => [...prevState, historyItem]);
+        // History has a max length of 7 items
+        setHistory(prevState => {
+            if (prevState.length >= 7) {
+                return [...prevState.slice(1), historyItem];
+            } else {
+                return [...prevState, historyItem];
+            }
+        });
     }
 
     return (

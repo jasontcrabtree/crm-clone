@@ -6,7 +6,6 @@ import AppNav from '@/ui-system/components/nav'
 import { cookies } from 'next/headers'
 import TodoList from '@/ui-system/components/todo-list'
 import HistoryProvider from '@/ui-system/components/history-provider'
-import useDisplayRecentHistory from '@/lib/hooks/useHistory'
 
 const inter = Inter({ subsets: ['latin'] })
 

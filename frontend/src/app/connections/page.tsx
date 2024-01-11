@@ -1,11 +1,10 @@
-const Page = ({ params }: { params: { id: string } }) => {
 
-    const { id } = params;
+const Page = () => {
 
     return (
         <div className="w-full bg-zinc-50">
             <h1>
-                Contact {id}
+                Connection
             </h1>
         </div>
     )
