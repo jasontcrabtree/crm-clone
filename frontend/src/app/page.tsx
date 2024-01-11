@@ -15,7 +15,7 @@ export const coreEntities = ['Contacts', 'Organisations', 'Interactions', 'Conne
 
 export async function fetchWeather() {
   try {
-    const data = await fetch('https://crm-clone.azurewebsites.net/weatherforecast')
+    const data = await fetch('http://localhost:5298/weatherforecast')
       .then(response => response.json())
       .then(response => response)
       .catch(err => console.error(err));
