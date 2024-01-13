@@ -1,4 +1,4 @@
-# # syntax=docker/dockerfile:1
+# syntax=docker/dockerfile:1
 
 # # Setup base
 # FROM node:18-alpine AS base
@@ -34,7 +34,7 @@
 # CMD ["npm", "run", "start"]
 
 # Dockerfile for Next.js (Development)
-FROM node:18-alpine
+FROM node:20-alpine
 WORKDIR /app
 COPY frontend/package.json frontend/package-lock.json ./
 
