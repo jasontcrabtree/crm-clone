@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend.Models;
 
@@ -11,9 +12,11 @@ using backend.Models;
 namespace backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240113113123_AddConnectionInteractionModelsAndRelationships")]
+    partial class AddConnectionInteractionModelsAndRelationships
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,6 +32,9 @@ namespace backend.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ConnectionId")
+                        .HasColumnType("int");
 
                     b.Property<string>("ConnectionLabel")
                         .IsRequired()
@@ -62,6 +68,8 @@ namespace backend.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ConnectionId");
 
                     b.HasIndex("ContactModelId");
 
@@ -223,6 +231,12 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Models.ConnectionModel", b =>
                 {
+                    b.HasOne("backend.Models.ConnectionModel", "Connection")
+                        .WithMany()
+                        .HasForeignKey("ConnectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("backend.Models.ContactModel", "ContactModel")
                         .WithMany("ConnectionModels")
                         .HasForeignKey("ContactModelId");
@@ -234,6 +248,8 @@ namespace backend.Migrations
                     b.HasOne("backend.Models.OrganisationModel", "OrganisationModel")
                         .WithMany("ConnectionModels")
                         .HasForeignKey("OrganisationModelId");
+
+                    b.Navigation("Connection");
 
                     b.Navigation("ContactModel");
 

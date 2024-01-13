@@ -1,38 +1,57 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend.Models
 {
+    // public enum OrganisationType
+    // {
+    //     [EnumLabel("Business")]
+    //     Business,
 
-    public enum PizzaFlavor
+    //     [EnumLabel("Government")]
+    //     Government,
+
+    //     [EnumLabel("Not For Profit")]
+    //     NotForProfit,
+
+    //     [EnumLabel("Charity")]
+    //     Charity,
+
+    //     [EnumLabel("Education")]
+    //     Education,
+
+    //     [EnumLabel("Healthcare")]
+    //     Healthcare,
+
+    //     [EnumLabel("Other")]
+    //     Other
+    // }
+    public enum OrganisationType
     {
-        Margherita,
-        Pepperoni,
-        Hawaiian,
-        Veggie,
-        [EnumLabel("BBQ Chicken")]
-        BBQChicken
-        // Add other flavors as needed
+        Business,
+        Government,
+        NotForProfit,
+        Charity,
+        Education,
+        Healthcare,
+        Other
     }
 
-    public class PizzaFlavorDto
+    public class OrganisationModel : BaseModel
     {
-        public PizzaFlavor Flavor { get; set; }
-        public string? Label { get; set; }
-    }
-
-    public class OrganisationModel
-    {
-        public int Id { get; set; }
-        [Required]
         public string OrganisationName { get; set; } = string.Empty;
         [Required]
         public string OrganisationWebsite { get; set; } = string.Empty;
         public string OrganisationPhone { get; set; } = string.Empty;
         public string OrganisationAddress { get; set; } = string.Empty;
+        [Required]
         public string OrganisationCity { get; set; } = string.Empty;
+        [Required]
         public string OrganisationCountry { get; set; } = string.Empty;
         public string OrganisationNotes { get; set; } = string.Empty;
-        // public string OrganisationType { get; set; } = Dictionary.OrganisationType;
-        // public string OrganisationIndustry { get; set; } = Dictionary.OrganizationIndustry.Other;
+
+        [Required]
+        public OrganisationType OrganisationType { get; set; }
+        public ICollection<ConnectionModel>? ConnectionModels { get; }
     }
 }

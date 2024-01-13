@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using backend.Models;
 
 [ApiController]
-[Route("api/organisation")]
+[Route("api/organisations")]
 
 public class OrganisationController : ControllerBase
 {
@@ -11,18 +11,6 @@ public class OrganisationController : ControllerBase
     public OrganisationController(IOrganisationService organisationService)
     {
         _organisationService = organisationService;
-    }
-
-    public List<PizzaFlavorDto> GetPizzaFlavorDtos()
-    {
-        var flavors = Enum.GetValues(typeof(PizzaFlavor)).Cast<PizzaFlavor>();
-        var flavorDtos = flavors.Select(flavor => new PizzaFlavorDto
-        {
-            Flavor = flavor,
-            Label = flavor.GetLabel()
-        }).ToList();
-
-        return flavorDtos;
     }
 
     [HttpGet]
@@ -40,15 +28,20 @@ public class OrganisationController : ControllerBase
     {
         if (await _organisationService.OrganisationExists(model.OrganisationName))
         {
-            return BadRequest("Contact already exists.");
+            return BadRequest("Organisation already exists.");
         }
 
         var createdOrganisation = await _organisationService.CreateOrganisation(model);
-        return CreatedAtAction(nameof(Get), new { id = createdOrganisation.Id }, new
+        return CreatedAtAction(nameof(Get),
+        new
         {
-            message = "Contact created successfully",
-            data = createdOrganisation
-        });
+            id = createdOrganisation.Id
+        },
+            new
+            {
+                message = "Organisation created successfully",
+                data = createdOrganisation
+            });
     }
 
     [HttpGet("{id}")]
@@ -56,13 +49,13 @@ public class OrganisationController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get(int id)
     {
-        var contact = await _organisationService.GetOrganisationById(id);
+        var orgnisation = await _organisationService.GetOrganisationById(id);
 
-        if (contact == null)
+        if (orgnisation == null)
         {
-            return NotFound("Contact not found.");
+            return NotFound("Organisation not found.");
         }
-        return Ok(new { data = contact });
+        return Ok(new { data = orgnisation });
 
     }
 
@@ -71,13 +64,13 @@ public class OrganisationController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(int id, [FromBody] OrganisationModel model)
     {
-        var updatedContact = await _organisationService.UpdateOrganisationById(id, model);
-        if (updatedContact == null)
+        var updatedOrganisation = await _organisationService.UpdateOrganisationById(id, model);
+        if (updatedOrganisation == null)
         {
-            return NotFound("Contact not found.");
+            return NotFound("Organisation not found.");
         }
 
-        return Ok(new { message = "Contact updated successfully", data = updatedContact });
+        return Ok(new { message = "Organisation updated successfully", data = updatedOrganisation });
     }
 
     [HttpDelete("{id}")]
@@ -85,10 +78,10 @@ public class OrganisationController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id)
     {
-        var contactExists = await _organisationService.GetOrganisationById(id);
-        if (contactExists == null)
+        var orgnisationExists = await _organisationService.GetOrganisationById(id);
+        if (orgnisationExists == null)
         {
-            return NotFound("Contact not found.");
+            return NotFound("Organisation not found.");
         }
 
         await _organisationService.DeleteOrganisationById(id);

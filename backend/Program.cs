@@ -7,9 +7,11 @@ using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
+using Microsoft.OpenApi.Models;
+
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 
@@ -47,11 +49,19 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddScoped<IContactService, ContactService>();
+builder.Services.AddScoped<IOrganisationService, OrganisationService>();
+builder.Services.AddScoped<IInteractionService, InteractionService>();
+builder.Services.AddScoped<IConnectionService, ConnectionService>();
 
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "CRM Clone API", Version = "v1" });
+    c.SchemaFilter<EnumSchemaFilter>();
+});
 
 // Configure Database Context
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
