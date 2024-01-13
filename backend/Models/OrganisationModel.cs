@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace backend.Models
 {
-    public class ContactModel
+    public class OrganisationModel
     {
         public int Id { get; set; }
         [Required]

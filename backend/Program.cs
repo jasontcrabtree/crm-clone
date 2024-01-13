@@ -46,6 +46,8 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddScoped<IContactService, ContactService>();
+
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -91,7 +93,6 @@ app.MapGet("/weatherforecast", () =>
         .ToArray();
     return forecast;
 })
-// .RequireAuthorization()
 .WithName("GetWeatherForecast")
 .WithOpenApi();
 

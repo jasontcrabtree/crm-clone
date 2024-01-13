@@ -30,8 +30,8 @@ public class AuthController : ControllerBase
             return BadRequest("Username already exists.");
         }
 
-        var user = new User { Username = model.Username };
-        var hasher = new PasswordHasher<User>();
+        var user = new UserModel { Username = model.Username };
+        var hasher = new PasswordHasher<UserModel>();
         user.Password = hasher.HashPassword(user, model.Password);
 
         _context.Users.Add(user);
@@ -57,7 +57,7 @@ public class AuthController : ControllerBase
             return Unauthorized("User not found.");
         }
 
-        var hasher = new PasswordHasher<User>();
+        var hasher = new PasswordHasher<UserModel>();
         var result = hasher.VerifyHashedPassword(user, user.Password, model.Password);
 
         if (result != PasswordVerificationResult.Success)

@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using backend.Models;
 
 namespace backend.Models
 {
@@ -10,8 +9,11 @@ namespace backend.Models
         {
         }
 
-        public DbSet<User> Users { get; set; }
-        // Add other DbSets for other entities
+        public DbSet<UserModel> Users { get; set; }
+
+        public DbSet<ContactModel> Contacts { get; set; }
+
+        public DbSet<OrganisationModel> Organisations { get; set; }
     }
 }
 

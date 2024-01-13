@@ -1,6 +1,5 @@
 namespace backend.Models
 
-
 {
     record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
     {

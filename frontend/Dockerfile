@@ -42,4 +42,4 @@ RUN npm install
 COPY frontend/ ./
 
 EXPOSE 3000
-CMD ["npm", "run", "dev-all"]
+CMD ["npm", "run", "dev"]
