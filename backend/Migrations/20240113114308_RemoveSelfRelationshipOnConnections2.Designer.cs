@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend.Models;
 
@@ -11,9 +12,11 @@ using backend.Models;
 namespace backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240113114308_RemoveSelfRelationshipOnConnections2")]
+    partial class RemoveSelfRelationshipOnConnections2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,13 +43,22 @@ namespace backend.Migrations
                     b.Property<int>("ContactId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ContactModelId")
+                        .HasColumnType("int");
+
                     b.Property<long>("CreatedTimeUnix")
                         .HasColumnType("bigint");
 
                     b.Property<int>("InteractionId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("InteractionModelId")
+                        .HasColumnType("int");
+
                     b.Property<int>("OrganisationId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OrganisationModelId")
                         .HasColumnType("int");
 
                     b.Property<long>("UpdatedTimeUnix")
@@ -54,11 +66,11 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContactId");
+                    b.HasIndex("ContactModelId");
 
-                    b.HasIndex("InteractionId");
+                    b.HasIndex("InteractionModelId");
 
-                    b.HasIndex("OrganisationId");
+                    b.HasIndex("OrganisationModelId");
 
                     b.ToTable("Connections");
                 });
@@ -216,21 +228,15 @@ namespace backend.Migrations
                 {
                     b.HasOne("backend.Models.ContactModel", "ContactModel")
                         .WithMany("ConnectionModels")
-                        .HasForeignKey("ContactId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ContactModelId");
 
                     b.HasOne("backend.Models.InteractionModel", "InteractionModel")
                         .WithMany("ConnectionModels")
-                        .HasForeignKey("InteractionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("InteractionModelId");
 
                     b.HasOne("backend.Models.OrganisationModel", "OrganisationModel")
                         .WithMany("ConnectionModels")
-                        .HasForeignKey("OrganisationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OrganisationModelId");
 
                     b.Navigation("ContactModel");
 
