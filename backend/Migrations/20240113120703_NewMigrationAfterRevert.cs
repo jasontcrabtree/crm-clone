@@ -5,7 +5,7 @@
 namespace backend.Migrations
 {
     /// <inheritdoc />
-    public partial class RemoveSelfRelationshipOnConnections2 : Migration
+    public partial class NewMigrationAfterRevert : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

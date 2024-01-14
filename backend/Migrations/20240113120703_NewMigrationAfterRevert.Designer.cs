@@ -12,8 +12,8 @@ using backend.Models;
 namespace backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240113115826_NewMigrationAfterRemovingSelfReference")]
-    partial class NewMigrationAfterRemovingSelfReference
+    [Migration("20240113120703_NewMigrationAfterRevert")]
+    partial class NewMigrationAfterRevert
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
