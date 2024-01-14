@@ -11,7 +11,7 @@ const EntityCard = ({ children }: { children: JSX.Element }) => {
   )
 }
 
-export const coreEntities = ['Contacts', 'Organisations', 'Interactions', 'Connections', 'Messages', 'Support'];
+const coreEntities = ['Contacts', 'Organisations', 'Interactions', 'Connections', 'Messages', 'Support'];
 
 const fetchWeather = async () => {
   try {
