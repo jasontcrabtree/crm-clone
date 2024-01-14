@@ -25,18 +25,19 @@ public class ConnectionController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] ConnectionModel model)
     {
-        // TODO: Figure out how to do this, maybe a concate of names?
-        // if (await _connectionService.ConnectionExists(model.ConnectionLabel))
-        // {
-        //     return BadRequest("Connection already exists.");
-        // }
-
-        var createdConnection = await _connectionService.CreateConnection(model);
-        return CreatedAtAction(nameof(Get), new { id = createdConnection.Id }, new
+        try
         {
-            message = "Connection created successfully",
-            data = createdConnection
-        });
+            var createdConnection = await _connectionService.CreateConnection(model);
+            return CreatedAtAction(nameof(Get), new { id = createdConnection.Id }, new
+            {
+                message = "Connection created successfully",
+                data = createdConnection
+            });
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpGet("{id}")]
@@ -80,5 +81,13 @@ public class ConnectionController : ControllerBase
 
         await _connectionService.DeleteConnectionById(id);
         return NoContent();
+    }
+
+    [HttpGet("aggregate")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAllAggregate([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 20)
+    {
+        var connections = await _connectionService.GetAllAggregateConnections(pageNumber, pageSize);
+        return Ok(new { data = connections });
     }
 }

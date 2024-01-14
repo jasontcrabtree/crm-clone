@@ -33,13 +33,6 @@ public class InteractionService : IInteractionService
             InteractionNotes = interactionModel.InteractionNotes,
             InteractionDate = interactionModel.InteractionDate,
             InteractionType = interactionModel.InteractionType,
-            // InteractionName = interactionModel.InteractionName,
-            // InteractionAddress = interactionModel.InteractionAddress,
-            // InteractionCity = interactionModel.InteractionCity,
-            // InteractionCountry = interactionModel.InteractionCountry,
-            // InteractionNotes = interactionModel.InteractionNotes,
-            // InteractionPhone = interactionModel.InteractionPhone,
-            // InteractionWebsite = interactionModel.InteractionWebsite
         };
 
         _context.Interactions.Add(interaction);
@@ -68,13 +61,10 @@ public class InteractionService : IInteractionService
             return null;
         }
 
-        // interaction.InteractionName = model.InteractionName;
-        // interaction.InteractionAddress = model.InteractionAddress;
-        // interaction.InteractionCity = model.InteractionCity;
-        // interaction.InteractionCountry = model.InteractionCountry;
-        // interaction.InteractionNotes = model.InteractionNotes;
-        // interaction.InteractionPhone = model.InteractionPhone;
-        // interaction.InteractionWebsite = model.InteractionWebsite;
+        interaction.InteractionTitle = model.InteractionTitle;
+        interaction.InteractionDate = model.InteractionDate;
+        interaction.InteractionType = model.InteractionType;
+        interaction.InteractionNotes = model.InteractionNotes;
 
         await _context.SaveChangesAsync();
         return interaction;
