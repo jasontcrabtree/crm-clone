@@ -13,7 +13,7 @@ const EntityCard = ({ children }: { children: JSX.Element }) => {
 
 export const coreEntities = ['Contacts', 'Organisations', 'Interactions', 'Connections', 'Messages', 'Support'];
 
-export async function fetchWeather() {
+const fetchWeather = async () => {
   try {
     const data = await fetch('http://localhost:5298/weatherforecast')
       .then(response => response.json())
