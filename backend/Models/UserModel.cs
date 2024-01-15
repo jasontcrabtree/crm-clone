@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend.Models
 {
@@ -9,5 +8,6 @@ namespace backend.Models
         public string Username { get; set; } = string.Empty;
         [Required]
         public string Password { get; set; } = string.Empty;
+        public ICollection<ContactModel>? ContactModels { get; }
     }
 }

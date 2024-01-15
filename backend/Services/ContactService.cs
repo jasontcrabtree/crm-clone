@@ -27,21 +27,22 @@ public class ContactService : IContactService
 
     public async Task<ContactModel> CreateContact(ContactModel contactModel, int userId)
     {
-        var contact = new ContactModel
+        // First, ensure that the user with the given userId exists and is tracked.
+        var user = await _context.Users.FindAsync(userId);
+        if (user == null)
         {
-            UserId = userId,
-            // Assign properties from contactModel
-            ContactFirstName = contactModel.ContactFirstName,
-            ContactSurname = contactModel.ContactSurname,
-            ContactEmail = contactModel.ContactEmail,
-            ContactPhone = contactModel.ContactPhone,
-            ContactNotes = contactModel.ContactNotes
-        };
+            throw new Exception("User does not exist.");
+        }
 
-        _context.Contacts.Add(contact);
+        contactModel.UserId = user.Id;
+
+        // _context.ChangeTracker.Clear();
+
+        // Create the contact as usual.
+        _context.Contacts.Add(contactModel);
         await _context.SaveChangesAsync();
 
-        return contact;
+        return contactModel;
     }
 
     public async Task<IEnumerable<ContactModel>> GetAllContacts(int userId, int pageNumber, int pageSize)
