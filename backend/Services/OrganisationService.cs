@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 public interface IOrganisationService
 {
     Task<bool> OrganisationExists(string organisationName);
-    Task<IEnumerable<OrganisationModel>> GetAllOrganisations(int pageNumber, int pageSize);
-    Task<OrganisationModel> CreateOrganisation(OrganisationModel organisationModel);
+    Task<IEnumerable<OrganisationModel>> GetAllOrganisations(int userId, int pageNumber, int pageSize);
+    Task<OrganisationModel> CreateOrganisation(OrganisationModel organisationModel, int userId);
     Task<OrganisationModel?> GetOrganisationById(int id);
     Task<OrganisationModel?> UpdateOrganisationById(int id, OrganisationModel organisationModel);
     Task DeleteOrganisationById(int id);
@@ -25,28 +25,35 @@ public class OrganisationService : IOrganisationService
         return await _context.Organisations.AnyAsync(u => u.OrganisationName == organisationEmail);
     }
 
-    public async Task<OrganisationModel> CreateOrganisation(OrganisationModel organisationModel)
+    public async Task<OrganisationModel> CreateOrganisation(OrganisationModel organisationModel, int userId)
     {
-        var organisation = new OrganisationModel
-        {
-            OrganisationName = organisationModel.OrganisationName,
-            OrganisationAddress = organisationModel.OrganisationAddress,
-            OrganisationCity = organisationModel.OrganisationCity,
-            OrganisationCountry = organisationModel.OrganisationCountry,
-            OrganisationNotes = organisationModel.OrganisationNotes,
-            OrganisationPhone = organisationModel.OrganisationPhone,
-            OrganisationWebsite = organisationModel.OrganisationWebsite
-        };
 
-        _context.Organisations.Add(organisation);
+        // First, ensure that the user with the given userId exists and is tracked.
+        var user = await _context.Organisations.FindAsync(userId) ?? throw new Exception("User does not exist.");
+
+        // var organisation = new OrganisationModel
+        // {
+        //     OrganisationName = organisationModel.OrganisationName,
+        //     OrganisationAddress = organisationModel.OrganisationAddress,
+        //     OrganisationCity = organisationModel.OrganisationCity,
+        //     OrganisationCountry = organisationModel.OrganisationCountry,
+        //     OrganisationNotes = organisationModel.OrganisationNotes,
+        //     OrganisationPhone = organisationModel.OrganisationPhone,
+        //     OrganisationWebsite = organisationModel.OrganisationWebsite
+        // };
+
+        organisationModel.UserId = user.Id;
+
+        _context.Organisations.Add(organisationModel);
         await _context.SaveChangesAsync();
 
-        return organisation;
+        return organisationModel;
     }
 
-    public async Task<IEnumerable<OrganisationModel>> GetAllOrganisations(int pageNumber, int pageSize)
+    public async Task<IEnumerable<OrganisationModel>> GetAllOrganisations(int userId, int pageNumber, int pageSize)
     {
         return await _context.Organisations
+                    .Where(organisation => organisation.UserId == userId)
                     .Skip((pageNumber - 1) * pageSize)
                     .Take(pageSize)
                     .ToListAsync();

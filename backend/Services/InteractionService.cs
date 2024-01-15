@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 public interface IInteractionService
 {
     Task<bool> InteractionExists(string interactionName);
-    Task<IEnumerable<InteractionModel>> GetAllInteractions(int pageNumber, int pageSize);
-    Task<InteractionModel> CreateInteraction(InteractionModel interactionModel);
+    Task<IEnumerable<InteractionModel>> GetAllInteractions(int userId, int pageNumber, int pageSize);
+    Task<InteractionModel> CreateInteraction(InteractionModel interactionModel, int userId);
     Task<InteractionModel?> GetInteractionById(int id);
     Task<InteractionModel?> UpdateInteractionById(int id, InteractionModel interactionModel);
     Task DeleteInteractionById(int id);
@@ -25,25 +25,31 @@ public class InteractionService : IInteractionService
         return await _context.Interactions.AnyAsync(u => u.InteractionTitle == interactionEmail);
     }
 
-    public async Task<InteractionModel> CreateInteraction(InteractionModel interactionModel)
+    public async Task<InteractionModel> CreateInteraction(InteractionModel interactionModel, int userId)
     {
-        var interaction = new InteractionModel
-        {
-            InteractionTitle = interactionModel.InteractionTitle,
-            InteractionNotes = interactionModel.InteractionNotes,
-            InteractionDate = interactionModel.InteractionDate,
-            InteractionType = interactionModel.InteractionType,
-        };
+        // First, ensure that the user with the given userId exists and is tracked.
+        var user = await _context.Interactions.FindAsync(userId) ?? throw new Exception("User does not exist.");
 
-        _context.Interactions.Add(interaction);
+        // var interaction = new InteractionModel
+        // {
+        //     InteractionTitle = interactionModel.InteractionTitle,
+        //     InteractionNotes = interactionModel.InteractionNotes,
+        //     InteractionDate = interactionModel.InteractionDate,
+        //     InteractionType = interactionModel.InteractionType,
+        // };
+
+        interactionModel.UserId = user.Id;
+
+        _context.Interactions.Add(interactionModel);
         await _context.SaveChangesAsync();
 
-        return interaction;
+        return interactionModel;
     }
 
-    public async Task<IEnumerable<InteractionModel>> GetAllInteractions(int pageNumber, int pageSize)
+    public async Task<IEnumerable<InteractionModel>> GetAllInteractions(int userId, int pageNumber, int pageSize)
     {
         return await _context.Interactions
+                    .Where(interaction => interaction.UserId == userId)
                     .Skip((pageNumber - 1) * pageSize)
                     .Take(pageSize)
                     .ToListAsync();

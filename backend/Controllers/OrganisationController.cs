@@ -3,7 +3,6 @@ using backend.Models;
 
 [ApiController]
 [Route("api/organisations")]
-
 public class OrganisationController : ControllerBase
 {
     private readonly IOrganisationService _organisationService;
@@ -17,7 +16,8 @@ public class OrganisationController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 20)
     {
-        var organisations = await _organisationService.GetAllOrganisations(pageNumber, pageSize);
+        int userId = User.GetUserId();
+        var organisations = await _organisationService.GetAllOrganisations(userId, pageNumber, pageSize);
         return Ok(new { data = organisations });
     }
 
@@ -26,12 +26,13 @@ public class OrganisationController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] OrganisationModel model)
     {
+        int userId = User.GetUserId();
         if (await _organisationService.OrganisationExists(model.OrganisationName))
         {
             return BadRequest("Organisation already exists.");
         }
 
-        var createdOrganisation = await _organisationService.CreateOrganisation(model);
+        var createdOrganisation = await _organisationService.CreateOrganisation(model, userId);
         return CreatedAtAction(nameof(Get),
         new
         {

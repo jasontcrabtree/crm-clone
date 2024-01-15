@@ -17,7 +17,8 @@ public class InteractionController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 20)
     {
-        var interactions = await _interactionService.GetAllInteractions(pageNumber, pageSize);
+        int userId = User.GetUserId();
+        var interactions = await _interactionService.GetAllInteractions(userId, pageNumber, pageSize);
         return Ok(new { data = interactions });
     }
 
@@ -26,12 +27,13 @@ public class InteractionController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] InteractionModel model)
     {
+        int userId = User.GetUserId();
         if (await _interactionService.InteractionExists(model.InteractionTitle))
         {
             return BadRequest("Interaction already exists.");
         }
 
-        var createdInteraction = await _interactionService.CreateInteraction(model);
+        var createdInteraction = await _interactionService.CreateInteraction(model, userId);
         return CreatedAtAction(nameof(Get),
         new
         {
