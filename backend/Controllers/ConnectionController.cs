@@ -16,7 +16,8 @@ public class ConnectionController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 20)
     {
-        var connections = await _connectionService.GetAllConnections(pageNumber, pageSize);
+        int userId = User.GetUserId();
+        var connections = await _connectionService.GetAllConnections(userId, pageNumber, pageSize);
         return Ok(new { data = connections });
     }
 
@@ -25,9 +26,10 @@ public class ConnectionController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] ConnectionModel model)
     {
+        int userId = User.GetUserId();
         try
         {
-            var createdConnection = await _connectionService.CreateConnection(model);
+            var createdConnection = await _connectionService.CreateConnection(model, userId);
             return CreatedAtAction(nameof(Get), new { id = createdConnection.Id }, new
             {
                 message = "Connection created successfully",

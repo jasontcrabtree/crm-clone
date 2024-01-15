@@ -15,10 +15,8 @@ namespace backend.Models
         public string ContactNotes { get; set; } = string.Empty;
         public ICollection<ConnectionModel>? ConnectionModels { get; }
 
-        // Foreign key for UserModel
+        // Relates contact to the user who owns that model
         public int UserId { get; set; }
-
-        // Navigation property for UserModel
         [ForeignKey("UserId")]
         public virtual UserModel? User { get; set; }
     }

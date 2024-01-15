@@ -13,14 +13,17 @@ public class ContactController : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 20)
     {
-        int userId = User.GetUserId(); // Method to retrieve current user's ID
+        int userId = User.GetUserId();
         var contacts = await _contactService.GetAllContacts(userId, pageNumber, pageSize);
         return Ok(new { data = contacts });
     }
 
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] ContactModel model)
     {
         int userId = User.GetUserId();

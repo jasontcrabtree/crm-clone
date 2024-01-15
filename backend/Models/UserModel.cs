@@ -8,6 +8,10 @@ namespace backend.Models
         public string Username { get; set; } = string.Empty;
         [Required]
         public string Password { get; set; } = string.Empty;
+        public ICollection<AggregateConnectionModel>? AggregateConnectionModels { get; }
+        public ICollection<ConnectionModel>? ConnectionModels { get; }
         public ICollection<ContactModel>? ContactModels { get; }
+        public ICollection<InteractionModel>? InteractionModels { get; }
+        public ICollection<OrganisationModel>? OrganisationModels { get; }
     }
 }

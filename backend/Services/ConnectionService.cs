@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 public interface IConnectionService
 {
     // Task<bool> ConnectionExists(string connectionName);
-    Task<IEnumerable<ConnectionModel>> GetAllConnections(int pageNumber, int pageSize);
-    Task<ConnectionModel> CreateConnection(ConnectionModel connectionModel);
+    Task<IEnumerable<ConnectionModel>> GetAllConnections(int userId, int pageNumber, int pageSize);
+    Task<ConnectionModel> CreateConnection(ConnectionModel connectionModel, int userId);
     Task<ConnectionModel?> GetConnectionById(int id);
     Task<ConnectionModel?> UpdateConnectionById(int id, ConnectionModel connectionModel);
     Task DeleteConnectionById(int id);
@@ -22,8 +22,13 @@ public class ConnectionService : IConnectionService
         _context = context;
     }
 
-    public async Task<ConnectionModel> CreateConnection(ConnectionModel connectionModel)
+    public async Task<ConnectionModel> CreateConnection(ConnectionModel connectionModel, int userId)
     {
+        var user = await _context.Users.FindAsync(userId);
+        if (user == null)
+        {
+            throw new Exception("User does not exist.");
+        }
         // Check if the contact, organisation, and interaction exist
         if (connectionModel.ContactId.HasValue && !_context.Contacts.Any(c => c.Id == connectionModel.ContactId.Value))
         {
@@ -37,6 +42,8 @@ public class ConnectionService : IConnectionService
         {
             throw new ArgumentException("Interaction does not exist");
         }
+
+        connectionModel.UserId = user.Id;
 
         var connection = new ConnectionModel
         {
@@ -53,7 +60,7 @@ public class ConnectionService : IConnectionService
         return connection;
     }
 
-    public async Task<IEnumerable<ConnectionModel>> GetAllConnections(int pageNumber, int pageSize)
+    public async Task<IEnumerable<ConnectionModel>> GetAllConnections(int userId, int pageNumber, int pageSize)
     {
         return await _context.Connections
                     .Skip((pageNumber - 1) * pageSize)
