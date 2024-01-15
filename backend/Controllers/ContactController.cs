@@ -13,24 +13,23 @@ public class ContactController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 20)
     {
-        var contacts = await _contactService.GetAllContacts(pageNumber, pageSize);
+        int userId = User.GetUserId(); // Method to retrieve current user's ID
+        var contacts = await _contactService.GetAllContacts(userId, pageNumber, pageSize);
         return Ok(new { data = contacts });
     }
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] ContactModel model)
     {
+        int userId = User.GetUserId();
         if (await _contactService.ContactExists(model.ContactEmail))
         {
             return BadRequest("Contact already exists.");
         }
 
-        var createdContact = await _contactService.CreateContact(model);
+        var createdContact = await _contactService.CreateContact(model, userId);
         return CreatedAtAction(nameof(Get), new { id = createdContact.Id }, new
         {
             message = "Contact created successfully",

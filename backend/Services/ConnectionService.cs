@@ -96,6 +96,7 @@ public class ConnectionService : IConnectionService
     public async Task<IEnumerable<AggregateConnectionModel>> GetAllAggregateConnections(int pageNumber, int pageSize)
     {
         return await _context.Connections
+                    .OrderBy(c => c.Id) // Replace 'Id' with the appropriate field for ordering
                     .Include(c => c.ContactModel)
                     .Include(c => c.OrganisationModel)
                     .Include(c => c.InteractionModel)
@@ -108,7 +109,6 @@ public class ConnectionService : IConnectionService
                         ContactId = c.ContactId,
                         OrganisationId = c.OrganisationId,
                         InteractionId = c.InteractionId,
-
                         // Include related data
                         ContactDetails = c.ContactModel,
                         OrganisationDetails = c.OrganisationModel,

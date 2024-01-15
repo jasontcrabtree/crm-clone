@@ -65,7 +65,7 @@ public class AuthController : ControllerBase
             return Unauthorized("Invalid password.");
         }
 
-        var token = GenerateJwtToken(user.Username);
+        var token = GenerateJwtToken(user);
         return Ok(new
         {
             user.Username,
@@ -73,7 +73,7 @@ public class AuthController : ControllerBase
         });
     }
 
-    private string GenerateJwtToken(string username)
+    private string GenerateJwtToken(UserModel user)
     {
         var jwtKey = _configuration["Jwt:Key"];
         if (string.IsNullOrEmpty(jwtKey))
@@ -85,10 +85,11 @@ public class AuthController : ControllerBase
         var key = Encoding.ASCII.GetBytes(jwtKey);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new Claim[]
-            {
-                new Claim(ClaimTypes.Name, username)
-            }),
+            Subject = new ClaimsIdentity(new[]
+        {
+            new Claim(ClaimTypes.Name, user.Username),
+            new Claim("userId", user.Id.ToString())
+        }),
             Expires = DateTime.UtcNow.AddDays(7),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };

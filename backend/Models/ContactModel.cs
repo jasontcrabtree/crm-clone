@@ -13,7 +13,13 @@ namespace backend.Models
         [Required]
         public string ContactPhone { get; set; } = string.Empty;
         public string ContactNotes { get; set; } = string.Empty;
-
         public ICollection<ConnectionModel>? ConnectionModels { get; }
+
+        // Foreign key for UserModel
+        public int UserId { get; set; }
+
+        // Navigation property for UserModel
+        [ForeignKey("UserId")]
+        public virtual UserModel? User { get; set; }
     }
 }

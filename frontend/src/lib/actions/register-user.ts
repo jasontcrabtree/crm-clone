@@ -14,7 +14,7 @@ export const registerUser = async (formData: FormData) => {
   const jsonFormObject = Object.fromEntries(formData.entries());
 
   const registerRes = await fetch(
-    `${process.env.BACKEND_API_URL}/api/auth/register`,
+    `${process.env.BACKEND_API_URL}/auth/register`,
     {
       method: 'POST',
       headers: {
@@ -27,17 +27,14 @@ export const registerUser = async (formData: FormData) => {
 
   // After user registration, retrieve user login JWT
   if (registerRes.status === 200) {
-    const loginRes = await fetch(
-      `${process.env.BACKEND_API_URL}/api/auth/login`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-API-KEY': apiKey,
-        },
-        body: JSON.stringify(jsonFormObject),
-      }
-    );
+    const loginRes = await fetch(`${process.env.BACKEND_API_URL}/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-KEY': apiKey,
+      },
+      body: JSON.stringify(jsonFormObject),
+    });
 
     const loginData = await loginRes.json();
 

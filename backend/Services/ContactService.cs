@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 public interface IContactService
 {
     Task<bool> ContactExists(string contactEmail);
-    Task<ContactModel> CreateContact(ContactModel contactModel);
+    Task<ContactModel> CreateContact(ContactModel contactModel, int userId);
     Task<ContactModel?> GetContactById(int id);
-    Task<IEnumerable<ContactModel>> GetAllContacts(int pageNumber, int pageSize);
+    Task<IEnumerable<ContactModel>> GetAllContacts(int userId, int pageNumber, int pageSize);
     Task<ContactModel?> UpdateContactById(int id, ContactModel model);
     Task DeleteContactById(int id);
 }
@@ -25,10 +25,11 @@ public class ContactService : IContactService
         return await _context.Contacts.AnyAsync(u => u.ContactEmail == contactEmail);
     }
 
-    public async Task<ContactModel> CreateContact(ContactModel contactModel)
+    public async Task<ContactModel> CreateContact(ContactModel contactModel, int userId)
     {
         var contact = new ContactModel
         {
+            UserId = userId,
             // Assign properties from contactModel
             ContactFirstName = contactModel.ContactFirstName,
             ContactSurname = contactModel.ContactSurname,
@@ -43,12 +44,13 @@ public class ContactService : IContactService
         return contact;
     }
 
-    public async Task<IEnumerable<ContactModel>> GetAllContacts(int pageNumber, int pageSize)
+    public async Task<IEnumerable<ContactModel>> GetAllContacts(int userId, int pageNumber, int pageSize)
     {
         return await _context.Contacts
-                    .Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToListAsync();
+                .Where(contact => contact.UserId == userId)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
     }
 
     public async Task<ContactModel?> GetContactById(int id)
