@@ -24,12 +24,8 @@ public class ConnectionService : IConnectionService
 
     public async Task<ConnectionModel> CreateConnection(ConnectionModel connectionModel, int userId)
     {
-        var user = await _context.Users.FindAsync(userId);
-        if (user == null)
-        {
-            throw new Exception("User does not exist.");
-        }
-        // Check if the contact, organisation, and interaction exist
+        var user = await _context.Users.FindAsync(userId) ?? throw new Exception("User does not exist.");
+
         if (connectionModel.ContactId.HasValue && !_context.Contacts.Any(c => c.Id == connectionModel.ContactId.Value))
         {
             throw new ArgumentException("Contact does not exist");
@@ -45,24 +41,25 @@ public class ConnectionService : IConnectionService
 
         connectionModel.UserId = user.Id;
 
-        var connection = new ConnectionModel
-        {
-            ConnectionLabel = connectionModel.ConnectionLabel,
-            ConnectionType = connectionModel.ConnectionType,
-            ContactId = connectionModel.ContactId,
-            OrganisationId = connectionModel.OrganisationId,
-            InteractionId = connectionModel.InteractionId
-        };
+        // var connection = new ConnectionModel
+        // {
+        //     ConnectionLabel = connectionModel.ConnectionLabel,
+        //     ConnectionType = connectionModel.ConnectionType,
+        //     ContactId = connectionModel.ContactId,
+        //     OrganisationId = connectionModel.OrganisationId,
+        //     InteractionId = connectionModel.InteractionId
+        // };
 
-        _context.Connections.Add(connection);
+        _context.Connections.Add(connectionModel);
         await _context.SaveChangesAsync();
 
-        return connection;
+        return connectionModel;
     }
 
     public async Task<IEnumerable<ConnectionModel>> GetAllConnections(int userId, int pageNumber, int pageSize)
     {
         return await _context.Connections
+                    .Where(connection => connection.UserId == userId)
                     .Skip((pageNumber - 1) * pageSize)
                     .Take(pageSize)
                     .ToListAsync();

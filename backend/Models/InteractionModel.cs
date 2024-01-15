@@ -42,5 +42,9 @@ namespace backend.Models
         public InteractionType InteractionType { get; set; }
         public ICollection<ConnectionModel>? ConnectionModels { get; }
 
+        // Relates interaction to the user who owns that model
+        public int UserId { get; set; }
+        [ForeignKey("UserId")]
+        public virtual UserModel? User { get; set; }
     }
 }

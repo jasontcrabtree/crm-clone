@@ -53,5 +53,10 @@ namespace backend.Models
         [Required]
         public OrganisationType OrganisationType { get; set; }
         public ICollection<ConnectionModel>? ConnectionModels { get; }
+
+        // Relates organisation to the user who owns that model
+        public int UserId { get; set; }
+        [ForeignKey("UserId")]
+        public virtual UserModel? User { get; set; }
     }
 }
