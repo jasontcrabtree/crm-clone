@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace backend.Models
 {
@@ -57,6 +58,7 @@ namespace backend.Models
         // Relates organisation to the user who owns that model
         public int UserId { get; set; }
         [ForeignKey("UserId")]
+        [JsonIgnore]
         public virtual UserModel? User { get; set; }
     }
 }

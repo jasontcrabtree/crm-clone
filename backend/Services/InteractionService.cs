@@ -6,9 +6,9 @@ public interface IInteractionService
     Task<bool> InteractionExists(string interactionName);
     Task<IEnumerable<InteractionModel>> GetAllInteractions(int userId, int pageNumber, int pageSize);
     Task<InteractionModel> CreateInteraction(InteractionModel interactionModel, int userId);
-    Task<InteractionModel?> GetInteractionById(int id);
-    Task<InteractionModel?> UpdateInteractionById(int id, InteractionModel interactionModel);
-    Task DeleteInteractionById(int id);
+    Task<InteractionModel?> GetInteractionById(int id, int userId);
+    Task<InteractionModel?> UpdateInteractionById(int id, InteractionModel interactionModel, int userId);
+    Task DeleteInteractionById(int id, int userId);
 }
 
 public class InteractionService : IInteractionService
@@ -28,15 +28,7 @@ public class InteractionService : IInteractionService
     public async Task<InteractionModel> CreateInteraction(InteractionModel interactionModel, int userId)
     {
         // First, ensure that the user with the given userId exists and is tracked.
-        var user = await _context.Interactions.FindAsync(userId) ?? throw new Exception("User does not exist.");
-
-        // var interaction = new InteractionModel
-        // {
-        //     InteractionTitle = interactionModel.InteractionTitle,
-        //     InteractionNotes = interactionModel.InteractionNotes,
-        //     InteractionDate = interactionModel.InteractionDate,
-        //     InteractionType = interactionModel.InteractionType,
-        // };
+        var user = await _context.Users.FindAsync(userId) ?? throw new Exception("User does not exist.");
 
         interactionModel.UserId = user.Id;
 
@@ -46,22 +38,22 @@ public class InteractionService : IInteractionService
         return interactionModel;
     }
 
-    public async Task<IEnumerable<InteractionModel>> GetAllInteractions(int userId, int pageNumber, int pageSize)
+    public async Task<IEnumerable<InteractionModel>> GetAllInteractions(int UserId, int pageNumber, int pageSize)
     {
         return await _context.Interactions
-                    .Where(interaction => interaction.UserId == userId)
+                    .Where(interaction => interaction.UserId == UserId)
                     .Skip((pageNumber - 1) * pageSize)
                     .Take(pageSize)
                     .ToListAsync();
     }
 
-    public async Task<InteractionModel?> GetInteractionById(int id)
+    public async Task<InteractionModel?> GetInteractionById(int id, int userId)
     {
-        return await _context.Interactions.FindAsync(id);
+        return await _context.Interactions.Where(c => c.Id == id && c.UserId == userId).FirstOrDefaultAsync();
     }
-    public async Task<InteractionModel?> UpdateInteractionById(int id, InteractionModel model)
+    public async Task<InteractionModel?> UpdateInteractionById(int id, InteractionModel model, int userId)
     {
-        var interaction = await _context.Interactions.FindAsync(id);
+        var interaction = await _context.Interactions.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
         if (interaction == null)
         {
             return null;
@@ -76,9 +68,10 @@ public class InteractionService : IInteractionService
         return interaction;
     }
 
-    public async Task DeleteInteractionById(int id)
+    public async Task DeleteInteractionById(int id, int userId)
     {
-        var interaction = await _context.Interactions.FindAsync(id);
+        var interaction = await _context.Interactions.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
+
         if (interaction != null)
         {
             _context.Interactions.Remove(interaction);

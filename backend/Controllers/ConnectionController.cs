@@ -3,7 +3,7 @@ using backend.Models;
 
 [ApiController]
 [Route("api/connections")]
-public class ConnectionController : ControllerBase
+public class ConnectionController : BaseController
 {
     private readonly IConnectionService _connectionService;
 
@@ -12,11 +12,12 @@ public class ConnectionController : ControllerBase
         _connectionService = connectionService;
     }
 
+
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 20)
     {
-        int userId = User.GetUserId();
+        int userId = GetUserId();
         var connections = await _connectionService.GetAllConnections(userId, pageNumber, pageSize);
         return Ok(new { data = connections });
     }
@@ -26,7 +27,7 @@ public class ConnectionController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] ConnectionModel model)
     {
-        int userId = User.GetUserId();
+        int userId = GetUserId();
         try
         {
             var createdConnection = await _connectionService.CreateConnection(model, userId);
@@ -47,7 +48,8 @@ public class ConnectionController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get(int id)
     {
-        var connection = await _connectionService.GetConnectionById(id);
+        int userId = GetUserId();
+        var connection = await _connectionService.GetConnectionById(id, userId);
         if (connection == null)
         {
             return NotFound("Connection not found.");
@@ -61,7 +63,8 @@ public class ConnectionController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(int id, [FromBody] ConnectionModel model)
     {
-        var updatedConnection = await _connectionService.UpdateConnectionById(id, model);
+        int userId = GetUserId();
+        var updatedConnection = await _connectionService.UpdateConnectionById(id, model, userId);
         if (updatedConnection == null)
         {
             return NotFound("Connection not found.");
@@ -75,13 +78,14 @@ public class ConnectionController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id)
     {
-        var connectionExists = await _connectionService.GetConnectionById(id);
+        int userId = GetUserId();
+        var connectionExists = await _connectionService.GetConnectionById(id, userId);
         if (connectionExists == null)
         {
             return NotFound("Connection not found.");
         }
 
-        await _connectionService.DeleteConnectionById(id);
+        await _connectionService.DeleteConnectionById(id, userId);
         return NoContent();
     }
 
@@ -89,7 +93,9 @@ public class ConnectionController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllAggregate([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 20)
     {
-        var connections = await _connectionService.GetAllAggregateConnections(pageNumber, pageSize);
+        int userId = User.GetUserId();
+
+        var connections = await _connectionService.GetAllAggregateConnections(userId, pageNumber, pageSize);
         return Ok(new { data = connections });
     }
 }

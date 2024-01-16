@@ -3,7 +3,7 @@ using backend.Models;
 
 [ApiController]
 [Route("api/organisations")]
-public class OrganisationController : ControllerBase
+public class OrganisationController : BaseController
 {
     private readonly IOrganisationService _organisationService;
 
@@ -50,13 +50,14 @@ public class OrganisationController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get(int id)
     {
-        var orgnisation = await _organisationService.GetOrganisationById(id);
+        int userId = User.GetUserId();
+        var organisation = await _organisationService.GetOrganisationById(id, userId);
 
-        if (orgnisation == null)
+        if (organisation == null)
         {
             return NotFound("Organisation not found.");
         }
-        return Ok(new { data = orgnisation });
+        return Ok(new { data = organisation });
 
     }
 
@@ -65,7 +66,8 @@ public class OrganisationController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(int id, [FromBody] OrganisationModel model)
     {
-        var updatedOrganisation = await _organisationService.UpdateOrganisationById(id, model);
+        int userId = User.GetUserId();
+        var updatedOrganisation = await _organisationService.UpdateOrganisationById(id, model, userId);
         if (updatedOrganisation == null)
         {
             return NotFound("Organisation not found.");
@@ -79,13 +81,14 @@ public class OrganisationController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id)
     {
-        var orgnisationExists = await _organisationService.GetOrganisationById(id);
-        if (orgnisationExists == null)
+        int userId = User.GetUserId();
+        var organisationExists = await _organisationService.GetOrganisationById(id, userId);
+        if (organisationExists == null)
         {
             return NotFound("Organisation not found.");
         }
 
-        await _organisationService.DeleteOrganisationById(id);
+        await _organisationService.DeleteOrganisationById(id, userId);
         return NoContent();
     }
 }

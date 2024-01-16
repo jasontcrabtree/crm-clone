@@ -3,18 +3,11 @@ using backend.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using System.Linq;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using System.Text.Json.Serialization;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-// Add services to the container.
 
 // Configure JWT Authentication and add Authorization
 var jwtKey = builder.Configuration["Jwt:Key"];
@@ -24,6 +17,7 @@ if (string.IsNullOrEmpty(jwtKey))
 }
 var key = Encoding.ASCII.GetBytes(jwtKey);
 
+// Add services to the container.
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -49,7 +43,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-
 builder.Services.AddScoped<IContactService, ContactService>();
 builder.Services.AddScoped<IOrganisationService, OrganisationService>();
 builder.Services.AddScoped<IInteractionService, InteractionService>();
@@ -58,7 +51,7 @@ builder.Services.AddScoped<IConnectionService, ConnectionService>();
 builder.Services.AddAuthorization();
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
-    options.JsonSerializerOptions.ReferenceHandler = null; // Disable reference handling
+    options.JsonSerializerOptions.ReferenceHandler = null;
     // options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
     options.JsonSerializerOptions.WriteIndented = true;
 });

@@ -6,9 +6,9 @@ public interface IOrganisationService
     Task<bool> OrganisationExists(string organisationName);
     Task<IEnumerable<OrganisationModel>> GetAllOrganisations(int userId, int pageNumber, int pageSize);
     Task<OrganisationModel> CreateOrganisation(OrganisationModel organisationModel, int userId);
-    Task<OrganisationModel?> GetOrganisationById(int id);
-    Task<OrganisationModel?> UpdateOrganisationById(int id, OrganisationModel organisationModel);
-    Task DeleteOrganisationById(int id);
+    Task<OrganisationModel?> GetOrganisationById(int id, int userId);
+    Task<OrganisationModel?> UpdateOrganisationById(int id, OrganisationModel organisationModel, int userId);
+    Task DeleteOrganisationById(int id, int userId);
 }
 
 public class OrganisationService : IOrganisationService
@@ -29,7 +29,7 @@ public class OrganisationService : IOrganisationService
     {
 
         // First, ensure that the user with the given userId exists and is tracked.
-        var user = await _context.Organisations.FindAsync(userId) ?? throw new Exception("User does not exist.");
+        var user = await _context.Users.FindAsync(userId) ?? throw new Exception("User does not exist.");
 
         // var organisation = new OrganisationModel
         // {
@@ -59,13 +59,14 @@ public class OrganisationService : IOrganisationService
                     .ToListAsync();
     }
 
-    public async Task<OrganisationModel?> GetOrganisationById(int id)
+    public async Task<OrganisationModel?> GetOrganisationById(int id, int userId)
     {
-        return await _context.Organisations.FindAsync(id);
+        return await _context.Organisations.Where(c => c.Id == id && c.UserId == userId).FirstOrDefaultAsync();
     }
-    public async Task<OrganisationModel?> UpdateOrganisationById(int id, OrganisationModel model)
+    public async Task<OrganisationModel?> UpdateOrganisationById(int id, OrganisationModel model, int userId)
     {
-        var organisation = await _context.Organisations.FindAsync(id);
+        var organisation = await _context.Organisations.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
+
         if (organisation == null)
         {
             return null;
@@ -83,9 +84,9 @@ public class OrganisationService : IOrganisationService
         return organisation;
     }
 
-    public async Task DeleteOrganisationById(int id)
+    public async Task DeleteOrganisationById(int id, int userId)
     {
-        var organisation = await _context.Organisations.FindAsync(id);
+        var organisation = await _context.Organisations.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
         if (organisation != null)
         {
             _context.Organisations.Remove(organisation);

@@ -3,7 +3,7 @@ using backend.Models;
 
 [ApiController]
 [Route("api/contacts")]
-public class ContactController : ControllerBase
+public class ContactController : BaseController
 {
     private readonly IContactService _contactService;
 
@@ -16,7 +16,7 @@ public class ContactController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 20)
     {
-        int userId = User.GetUserId();
+        int userId = GetUserId();
         var contacts = await _contactService.GetAllContacts(userId, pageNumber, pageSize);
         return Ok(new { data = contacts });
     }
@@ -26,7 +26,7 @@ public class ContactController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] ContactModel model)
     {
-        int userId = User.GetUserId();
+        int userId = GetUserId();
         if (await _contactService.ContactExists(model.ContactEmail))
         {
             return BadRequest("Contact already exists.");
@@ -45,14 +45,22 @@ public class ContactController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get(int id)
     {
-        var contact = await _contactService.GetContactById(id);
+        // var contact = await _contactService.GetContactById(id);
+
+        // if (contact == null)
+        // {
+        //     return NotFound("Contact not found.");
+        // }
+        // return Ok(new { data = contact });
+
+        int userId = GetUserId();
+        var contact = await _contactService.GetContactById(id, userId);
 
         if (contact == null)
         {
             return NotFound("Contact not found.");
         }
         return Ok(new { data = contact });
-
     }
 
     [HttpPut("{id}")]
@@ -60,7 +68,16 @@ public class ContactController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(int id, [FromBody] ContactModel model)
     {
-        var updatedContact = await _contactService.UpdateContactById(id, model);
+        // var updatedContact = await _contactService.UpdateContactById(id, model);
+        // if (updatedContact == null)
+        // {
+        //     return NotFound("Contact not found.");
+        // }
+
+        // return Ok(new { message = "Contact updated successfully", data = updatedContact });
+        int userId = GetUserId();
+        var updatedContact = await _contactService.UpdateContactById(id, model, userId);
+
         if (updatedContact == null)
         {
             return NotFound("Contact not found.");
@@ -74,13 +91,23 @@ public class ContactController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id)
     {
-        var contactExists = await _contactService.GetContactById(id);
+        // var contactExists = await _contactService.GetContactById(id);
+        // if (contactExists == null)
+        // {
+        //     return NotFound("Contact not found.");
+        // }
+
+        // await _contactService.DeleteContactById(id);
+        // return NoContent();
+        int userId = GetUserId();
+        var contactExists = await _contactService.GetContactById(id, userId);
+
         if (contactExists == null)
         {
             return NotFound("Contact not found.");
         }
 
-        await _contactService.DeleteContactById(id);
+        await _contactService.DeleteContactById(id, userId);
         return NoContent();
     }
 }

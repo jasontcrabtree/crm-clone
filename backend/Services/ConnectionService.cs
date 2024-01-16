@@ -6,14 +6,14 @@ public interface IConnectionService
     // Task<bool> ConnectionExists(string connectionName);
     Task<IEnumerable<ConnectionModel>> GetAllConnections(int userId, int pageNumber, int pageSize);
     Task<ConnectionModel> CreateConnection(ConnectionModel connectionModel, int userId);
-    Task<ConnectionModel?> GetConnectionById(int id);
-    Task<ConnectionModel?> UpdateConnectionById(int id, ConnectionModel connectionModel);
-    Task DeleteConnectionById(int id);
+    Task<ConnectionModel?> GetConnectionById(int id, int userId);
+    Task<ConnectionModel?> UpdateConnectionById(int id, ConnectionModel connectionModel, int userId);
+    Task DeleteConnectionById(int id, int userId);
 
-    Task<IEnumerable<AggregateConnectionModel>> GetAllAggregateConnections(int pageNumber, int pageSize);
+    Task<IEnumerable<AggregateConnectionModel>> GetAllAggregateConnections(int userId, int pageNumber, int pageSize);
 }
 
-public class ConnectionService : IConnectionService
+public class ConnectionService : BaseService, IConnectionService
 {
     private readonly AppDbContext _context;
 
@@ -22,9 +22,9 @@ public class ConnectionService : IConnectionService
         _context = context;
     }
 
-    public async Task<ConnectionModel> CreateConnection(ConnectionModel connectionModel, int userId)
+    public async Task<ConnectionModel> CreateConnection(ConnectionModel connectionModel, int UserId)
     {
-        var user = await _context.Users.FindAsync(userId) ?? throw new Exception("User does not exist.");
+        var user = await _context.Users.FindAsync(UserId) ?? throw new Exception("User does not exist.");
 
         if (connectionModel.ContactId.HasValue && !_context.Contacts.Any(c => c.Id == connectionModel.ContactId.Value))
         {
@@ -41,15 +41,6 @@ public class ConnectionService : IConnectionService
 
         connectionModel.UserId = user.Id;
 
-        // var connection = new ConnectionModel
-        // {
-        //     ConnectionLabel = connectionModel.ConnectionLabel,
-        //     ConnectionType = connectionModel.ConnectionType,
-        //     ContactId = connectionModel.ContactId,
-        //     OrganisationId = connectionModel.OrganisationId,
-        //     InteractionId = connectionModel.InteractionId
-        // };
-
         _context.Connections.Add(connectionModel);
         await _context.SaveChangesAsync();
 
@@ -59,19 +50,21 @@ public class ConnectionService : IConnectionService
     public async Task<IEnumerable<ConnectionModel>> GetAllConnections(int userId, int pageNumber, int pageSize)
     {
         return await _context.Connections
-                    .Where(connection => connection.UserId == userId)
+                    .Where(connection => connection.UserId == UserId)
                     .Skip((pageNumber - 1) * pageSize)
                     .Take(pageSize)
                     .ToListAsync();
     }
 
-    public async Task<ConnectionModel?> GetConnectionById(int id)
+    public async Task<ConnectionModel?> GetConnectionById(int id, int userId)
     {
-        return await _context.Connections.FindAsync(id);
+        return await _context.Connections.Where(c => c.Id == id && c.UserId == userId).FirstOrDefaultAsync();
     }
-    public async Task<ConnectionModel?> UpdateConnectionById(int id, ConnectionModel model)
+
+    public async Task<ConnectionModel?> UpdateConnectionById(int id, ConnectionModel model, int userId)
     {
-        var connection = await _context.Connections.FindAsync(id);
+        var connection = await _context.Connections.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
+
         if (connection == null)
         {
             return null;
@@ -87,9 +80,9 @@ public class ConnectionService : IConnectionService
         return connection;
     }
 
-    public async Task DeleteConnectionById(int id)
+    public async Task DeleteConnectionById(int id, int userId)
     {
-        var connection = await _context.Connections.FindAsync(id);
+        var connection = await _context.Connections.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
         if (connection != null)
         {
             _context.Connections.Remove(connection);
@@ -97,10 +90,11 @@ public class ConnectionService : IConnectionService
         }
     }
 
-    public async Task<IEnumerable<AggregateConnectionModel>> GetAllAggregateConnections(int pageNumber, int pageSize)
+    public async Task<IEnumerable<AggregateConnectionModel>> GetAllAggregateConnections(int userId, int pageNumber, int pageSize)
     {
         return await _context.Connections
-                    .OrderBy(c => c.Id) // Replace 'Id' with the appropriate field for ordering
+                    .Where(connection => connection.UserId == userId)
+                    .OrderBy(c => c.Id)
                     .Include(c => c.ContactModel)
                     .Include(c => c.OrganisationModel)
                     .Include(c => c.InteractionModel)

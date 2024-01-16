@@ -5,10 +5,10 @@ public interface IContactService
 {
     Task<bool> ContactExists(string contactEmail);
     Task<ContactModel> CreateContact(ContactModel contactModel, int userId);
-    Task<ContactModel?> GetContactById(int id);
+    Task<ContactModel?> GetContactById(int id, int userId);
     Task<IEnumerable<ContactModel>> GetAllContacts(int userId, int pageNumber, int pageSize);
-    Task<ContactModel?> UpdateContactById(int id, ContactModel model);
-    Task DeleteContactById(int id);
+    Task<ContactModel?> UpdateContactById(int id, ContactModel model, int userId);
+    Task DeleteContactById(int id, int userId);
 }
 
 public class ContactService : IContactService
@@ -38,22 +38,37 @@ public class ContactService : IContactService
         return contactModel;
     }
 
-    public async Task<IEnumerable<ContactModel>> GetAllContacts(int userId, int pageNumber, int pageSize)
+    public async Task<IEnumerable<ContactModel>> GetAllContacts(int UserId, int pageNumber, int pageSize)
     {
         return await _context.Contacts
-                .Where(contact => contact.UserId == userId)
+                .Where(contact => contact.UserId == UserId)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
     }
 
-    public async Task<ContactModel?> GetContactById(int id)
+    public async Task<ContactModel?> GetContactById(int id, int userId)
     {
-        return await _context.Contacts.FindAsync(id);
+        // return await _context.Contacts.FindAsync(id);
+        return await _context.Contacts.Where(c => c.Id == id && c.UserId == userId).FirstOrDefaultAsync();
     }
-    public async Task<ContactModel?> UpdateContactById(int id, ContactModel model)
+    public async Task<ContactModel?> UpdateContactById(int id, ContactModel model, int userId)
     {
-        var contact = await _context.Contacts.FindAsync(id);
+        // var contact = await _context.Contacts.FindAsync(id);
+        // if (contact == null)
+        // {
+        //     return null;
+        // }
+
+        // contact.ContactFirstName = model.ContactFirstName;
+        // contact.ContactSurname = model.ContactSurname;
+        // contact.ContactEmail = model.ContactEmail;
+        // contact.ContactPhone = model.ContactPhone;
+        // contact.ContactNotes = model.ContactNotes;
+
+        // await _context.SaveChangesAsync();
+        // return contact;
+        var contact = await _context.Contacts.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
         if (contact == null)
         {
             return null;
@@ -69,9 +84,15 @@ public class ContactService : IContactService
         return contact;
     }
 
-    public async Task DeleteContactById(int id)
+    public async Task DeleteContactById(int id, int userId)
     {
-        var contact = await _context.Contacts.FindAsync(id);
+        // var contact = await _context.Contacts.FindAsync(id);
+        // if (contact != null)
+        // {
+        //     _context.Contacts.Remove(contact);
+        //     await _context.SaveChangesAsync();
+        // }
+        var contact = await _context.Contacts.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
         if (contact != null)
         {
             _context.Contacts.Remove(contact);
