@@ -6,6 +6,7 @@ import AppNav from '@/ui-system/components/nav'
 import { cookies } from 'next/headers'
 import TodoList from '@/ui-system/components/todo-list'
 import HistoryProvider from '@/ui-system/components/history-provider'
+import React from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -34,12 +35,13 @@ export const metadata: Metadata = {
   creator: "Jason Crabtree",
 }
 
-const RootLayout = ({
+const Layout = ({
   children,
+  actionslot
 }: {
-  children: React.ReactNode
+  children: React.ReactNode,
+  actionslot: React.ReactNode
 }) => {
-
 
   const { session, user } = getAuthSession();
 
@@ -47,9 +49,10 @@ const RootLayout = ({
     <AuthProvider session={session}>
       <HistoryProvider>
         <html lang="en">
-          <body className={`${inter.className} bg-white flex sm:flex-row flex-col`}>
+          <body className={`${inter.className} bg-white flex sm:flex-row flex-col w-full`}>
             <AppNav user={user} session={session} />
             {children}
+            {actionslot}
             <TodoList />
           </body>
         </html>
@@ -58,4 +61,4 @@ const RootLayout = ({
   )
 }
 
-export default RootLayout;
+export default Layout;

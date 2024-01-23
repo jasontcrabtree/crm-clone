@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * Converts a URL or a path-like string into a nicely formatted string
  * This function removes any leading '/', and if the string contains a second '/',

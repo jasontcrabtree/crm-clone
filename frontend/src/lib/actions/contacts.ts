@@ -1,32 +1,40 @@
-import { unstable_noStore as noStore } from 'next/cache';
+'use server';
+
+import {
+  unstable_noStore as noStore,
+  revalidatePath,
+  revalidateTag,
+} from 'next/cache';
+import { fetchUtil } from '../server/server-utils';
 
 const apiEndpoint = process.env.BACKEND_API_URL;
-const apiKey = process.env.CLIENT_SERVER_API_KEY;
 
 export const getAllContacts = async () => {
-  // Api key needed to access backend
-  if (!apiKey) {
-    throw new Error('API key is undefined');
-  }
-
   noStore();
 
-  const options = {
+  const data = await fetchUtil({
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-API-KEY': apiKey,
+    url: `${apiEndpoint}/contacts`,
+  });
+
+  return data;
+};
+
+export const newContact = async () => {
+  const data = await fetchUtil({
+    method: 'POST',
+    url: `${apiEndpoint}/contacts`,
+    body: {
+      contactEmail: `jasondevtesting+${new Date().getMinutes()}.${new Date().getMilliseconds()}@gmail.com`,
+      contactFirstName: `Jason H${new Date().getHours()} M${new Date().getMinutes()} MS${new Date().getMilliseconds()}`,
+      contactPhone: '0273224961',
+      contactSurname: 'C',
+      contactNotes: 'Second demo in NextJS',
     },
-    // body: JSON.stringify(jsonFormObject),
-  };
+  });
 
-  const apiRes = await fetch(`${apiEndpoint}/contacts`, options);
-
-  if (!apiRes.ok) {
-    throw new Error(apiRes.statusText);
-  }
-
-  const { data } = await apiRes.json();
+  // revalidateTag('contacts');
+  revalidatePath('/contacts/[slug]', 'layout');
 
   return data;
 };

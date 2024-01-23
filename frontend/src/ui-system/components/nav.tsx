@@ -1,6 +1,5 @@
 'use client';
 
-import Link from "next/link"
 import { usePathname } from "next/navigation";
 
 import logoutSession from "@/lib/actions/logout-session";
@@ -8,8 +7,8 @@ import { AuthProps } from "@/lib/types/auth";
 
 import { useHistoryContext } from "./history-provider";
 import CustomLink from "./custom-link";
-import { mergeClasses } from "@/lib/shad-utils";
-import { formatUrlToReadable } from "@/lib/utils";
+import { mergeClasses } from "@/lib/client/shad-utils";
+import { formatUrlToReadable } from "@/lib/client/client-utils";
 import { ArrowPathIcon, BoltIcon, BuildingOffice2Icon, ChatBubbleLeftIcon, GlobeAsiaAustraliaIcon, HomeIcon, QuestionMarkCircleIcon, UserGroupIcon, UserIcon } from '@heroicons/react/24/outline'
 
 import { ArrowPathIcon as MicroArrowPathIcon, BoltIcon as MicroBoltIcon, ChatBubbleLeftIcon as MicroBuildingOffice2Icon, ChatBubbleLeftIcon as MicroChatBubbleLeftIcon, GlobeAsiaAustraliaIcon as MicroGlobeAsiaAustraliaIcon, HomeIcon as MicroHomeIcon, QuestionMarkCircleIcon as MicroQuestionMarkCircleIcon, UserGroupIcon as MicroUserGroupIcon, UserIcon as MicroUserIcon } from '@heroicons/react/16/solid'
@@ -123,14 +122,14 @@ const AppNav = ({ session, user }: AuthProps) => {
                 {session && 1 === 3 ? (
                     <>
                         <li>
-                            <Link href="/login">
+                            <CustomLink href="/login">
                                 Login
-                            </Link>
+                            </CustomLink>
                         </li>
                         <li>
-                            <Link href="/register">
+                            <CustomLink href="/register">
                                 Register
-                            </Link>
+                            </CustomLink>
                         </li>
                     </>
                 ) : null}
