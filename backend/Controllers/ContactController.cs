@@ -68,13 +68,7 @@ public class ContactController : BaseController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(int id, [FromBody] ContactModel model)
     {
-        // var updatedContact = await _contactService.UpdateContactById(id, model);
-        // if (updatedContact == null)
-        // {
-        //     return NotFound("Contact not found.");
-        // }
 
-        // return Ok(new { message = "Contact updated successfully", data = updatedContact });
         int userId = GetUserId();
         var updatedContact = await _contactService.UpdateContactById(id, model, userId);
 
@@ -83,7 +77,19 @@ public class ContactController : BaseController
             return NotFound("Contact not found.");
         }
 
-        return Ok(new { message = "Contact updated successfully", data = updatedContact });
+        //     await LogInteractionAsync(
+        //       entityType: nameof(ContactModel),
+        //       entityId: id,
+        //       interactionType: InteractionType.ContactUpdated,
+        //       title: "Contact Updated",
+        //       details: new { }
+        //   );
+
+        return Ok(new
+        {
+            message = "Contact updated successfully",
+            data = updatedContact
+        });
     }
 
     [HttpDelete("{id}")]

@@ -12,14 +12,14 @@ export const NewContact = () => {
             <Button onClick={() => router.push('/contacts?new')}>
                 Add Contact
             </Button>
-            {/* <Button
-            onClick={async () => {
-                const data = await newContact();
-                console.log('data', data);
-            }}
-        >
-            New contact
-            </Button> */}
+            <Button
+                onClick={async () => {
+                    const data = await newContact();
+                    console.log('data', data);
+                }}
+            >
+                New contact
+            </Button>
         </>
     )
 }
