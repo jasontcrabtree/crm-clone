@@ -1,4 +1,5 @@
 import { getAllContacts } from "@/lib/actions/contacts";
+import { ContactsList } from "@/ui-system/components/contacts/ContactsList";
 import { DashboardSkeleton } from "@/ui-system/skeletons/dashboard";
 import { Suspense } from "react";
 
@@ -31,6 +32,9 @@ const ShowWeather = async () => {
 
   return (
     <div className="bg-yellow-100 w-full h-full grid grid-cols-3 gap-1 p-1">
+      <EntityCard>
+        <ContactsList length={3} size="compact" />
+      </EntityCard>
       {coreEntities.map((entity, key) => {
         return (
           <EntityCard key={key}>
@@ -57,7 +61,7 @@ const ShowWeather = async () => {
 
 const Page = async () => {
   const contacts = await getAllContacts();
-  console.log(contacts)
+  // console.log(contacts)
 
   return (
     <>

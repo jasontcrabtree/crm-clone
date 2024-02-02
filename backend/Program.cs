@@ -17,6 +17,8 @@ if (string.IsNullOrEmpty(jwtKey))
 var key = Encoding.ASCII.GetBytes(jwtKey);
 
 // Add services to the container.
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {

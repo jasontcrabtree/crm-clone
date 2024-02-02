@@ -14,6 +14,7 @@ public abstract class BaseController : ControllerBase
             }
         }
 
-        throw new InvalidOperationException("User ID not found.");
+        // throw new InvalidOperationException("User ID not found.");
+        return 0;
     }
 }

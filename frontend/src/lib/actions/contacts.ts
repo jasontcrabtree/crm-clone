@@ -1,10 +1,6 @@
 'use server';
 
-import {
-  unstable_noStore as noStore,
-  revalidatePath,
-  revalidateTag,
-} from 'next/cache';
+import { unstable_noStore as noStore, revalidatePath } from 'next/cache';
 import { fetchUtil } from '../server/server-utils';
 
 const apiEndpoint = process.env.BACKEND_API_URL;
@@ -32,9 +28,7 @@ export const newContact = async () => {
       contactNotes: 'Second demo in NextJS',
     },
   });
-
   // revalidateTag('contacts');
   revalidatePath('/contacts/[slug]', 'layout');
-
   return data;
 };

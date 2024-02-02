@@ -46,8 +46,8 @@ const Layout = ({
   const { session, user } = getAuthSession();
 
   return (
-    <AuthProvider session={session}>
-      <HistoryProvider>
+    <HistoryProvider>
+      <AuthProvider session={session}>
         <html lang="en">
           <body className={`${inter.className} bg-white flex sm:flex-row flex-col w-full`}>
             <AppNav user={user} session={session} />
@@ -56,8 +56,8 @@ const Layout = ({
             <TodoList />
           </body>
         </html>
-      </HistoryProvider>
-    </AuthProvider>
+      </AuthProvider>
+    </HistoryProvider>
   )
 }
 

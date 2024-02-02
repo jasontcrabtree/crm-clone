@@ -1,6 +1,7 @@
 import { Connection } from './connections';
 
 export type Contact = {
+  index?: number;
   id: number;
   contactFirstName: string;
   contactSurname: string;

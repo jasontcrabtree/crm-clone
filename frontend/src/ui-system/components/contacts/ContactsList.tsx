@@ -1,28 +1,25 @@
-'use server'
+'use server';
 
 import { getAllContacts } from "@/lib/actions/contacts";
-import CustomLink from "../custom-link";
 import { Contact } from "@/lib/types/contacts";
+import ContactCard from "./ContactCard";
 
-export const ContactsList = async () => {
+export const ContactsList = async (
+    { size, length = 7 }: { size: string, length?: number }
+) => {
+
     const contacts = await getAllContacts();
-    console.log('contacts,', contacts)
+
+    const gridSize = size === "full" ? "grid-cols-3" : "grid-cols-auto-fit";
 
     return (
-        <div className="p-4 border-gray-700 border-[1px]">
-            {contacts.map((contact: Contact, index: string) => {
-                console.log('contact', contact);
+        <div className={`grid md:${gridSize} gap-2 p-2`}>
+            {contacts.slice(0, length).map((contact: Contact) => {
                 return (
-                    <div className="flex flex-row gap-2" key={index}>
-                        <h2>
-                            <CustomLink href={`/contacts/${contact.id}`} classes="text-indigo-700 underline">
-                                {contact.contactFirstName}
-                            </CustomLink>
-                        </h2>
-                        <h3>
-                            {contact.contactNotes}
-                        </h3>
-                    </div>
+                    <ContactCard
+                        key={contact.id}
+                        contact={contact}
+                    />
                 )
             })}
         </div>
