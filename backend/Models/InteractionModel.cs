@@ -64,8 +64,7 @@ namespace backend.Models
         /// </summary>
         public string? CustomInteractionType { get; set; }
 
-        // New fields for polymorphic relationship
-        public string? EntityType { get; set; }
+        public string EntityType { get; set; } = string.Empty;
         public int EntityId { get; set; }
 
         public int UserId { get; set; }

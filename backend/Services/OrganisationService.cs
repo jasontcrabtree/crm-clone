@@ -54,6 +54,7 @@ public class OrganisationService : IOrganisationService
     {
         return await _context.Organisations
                     .Where(organisation => organisation.UserId == userId)
+                    .OrderByDescending(c => c.Id)
                     .Skip((pageNumber - 1) * pageSize)
                     .Take(pageSize)
                     .ToListAsync();

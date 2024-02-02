@@ -6,9 +6,8 @@ public abstract class BaseModel
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
-
-    public long CreatedTimeUnix { get; private set; }
-    public long UpdatedTimeUnix { get; private set; }
+    public long CreatedTimeUnix { get; internal set; }
+    public long UpdatedTimeUnix { get; internal set; }
 
     public void SetCreatedTime()
     {

@@ -42,6 +42,7 @@ public class ContactService : IContactService
     {
         return await _context.Contacts
                 .Where(contact => contact.UserId == UserId)
+                .OrderByDescending(c => c.Id)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();

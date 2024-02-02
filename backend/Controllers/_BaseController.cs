@@ -30,4 +30,5 @@ public abstract class BaseController : ControllerBase
     {
         await InteractionLoggingService.LogInteractionAsync(entityType, entityId, interactionType, title, details, customInteractionType);
     }
+
 }

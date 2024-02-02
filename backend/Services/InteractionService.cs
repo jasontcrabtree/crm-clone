@@ -9,6 +9,8 @@ public interface IInteractionService
     Task<InteractionModel?> GetInteractionById(int id, int userId);
     Task<InteractionModel?> UpdateInteractionById(int id, InteractionModel interactionModel, int userId);
     Task DeleteInteractionById(int id, int userId);
+    Task<IEnumerable<InteractionModel>> GetUserInteractionsForEntityAsync(string entityType, int entityId, int userId);
+    Task<IEnumerable<InteractionModel>> GetAllUserInteractionsAsync(int userId);
 }
 
 public class InteractionService : IInteractionService
@@ -38,13 +40,14 @@ public class InteractionService : IInteractionService
         return interactionModel;
     }
 
-    public async Task<IEnumerable<InteractionModel>> GetAllInteractions(int UserId, int pageNumber, int pageSize)
+    public async Task<IEnumerable<InteractionModel>> GetAllInteractions(int userId, int pageNumber, int pageSize)
     {
         return await _context.Interactions
-                    .Where(interaction => interaction.UserId == UserId)
-                    .Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToListAsync();
+            .Where(i => i.UserId == userId)
+            .OrderByDescending(i => i.InteractionDate)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
     }
 
     public async Task<InteractionModel?> GetInteractionById(int id, int userId)
@@ -79,4 +82,19 @@ public class InteractionService : IInteractionService
         }
     }
 
+    public async Task<IEnumerable<InteractionModel>> GetUserInteractionsForEntityAsync(string entityType, int entityId, int userId)
+    {
+        return await _context.Interactions
+         .Where(i => i.EntityType.Equals(entityType, StringComparison.OrdinalIgnoreCase)
+                     && i.EntityId == entityId
+                     && i.UserId == userId)
+         .ToListAsync();
+    }
+
+    public async Task<IEnumerable<InteractionModel>> GetAllUserInteractionsAsync(int userId)
+    {
+        return await _context.Interactions
+            .Where(i => i.UserId == userId)
+            .ToListAsync();
+    }
 }

@@ -51,6 +51,7 @@ public class ConnectionService : BaseService, IConnectionService
     {
         return await _context.Connections
                     .Where(connection => connection.UserId == UserId)
+                    .OrderByDescending(c => c.Id)
                     .Skip((pageNumber - 1) * pageSize)
                     .Take(pageSize)
                     .ToListAsync();
@@ -94,7 +95,7 @@ public class ConnectionService : BaseService, IConnectionService
     {
         return await _context.Connections
                     .Where(connection => connection.UserId == userId)
-                    .OrderBy(c => c.Id)
+                    .OrderByDescending(c => c.Id)
                     .Include(c => c.ContactModel)
                     .Include(c => c.OrganisationModel)
                     .Include(c => c.InteractionModel)
