@@ -8,8 +8,8 @@ export type Contact = {
   contactEmail: string;
   contactPhone: string;
   contactNotes: string;
-  userId: number;
-  createdTimeUnix: number;
-  updatedTimeUnix: number;
-  connections: Connection[];
+  userId?: number;
+  createdTimeUnix?: number;
+  updatedTimeUnix?: number;
+  connections?: Connection[];
 };

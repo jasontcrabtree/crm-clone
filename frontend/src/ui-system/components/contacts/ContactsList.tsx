@@ -3,6 +3,7 @@
 import { getAllContacts } from "@/lib/actions/contacts";
 import { Contact } from "@/lib/types/contacts";
 import ContactCard from "./ContactCard";
+import { styleComponentType } from "@/lib/utils";
 
 export const ContactsList = async (
     { size, length = 7 }: { size: string, length?: number }
@@ -13,7 +14,7 @@ export const ContactsList = async (
     const gridSize = size === "full" ? "grid-cols-3" : "grid-cols-auto-fit";
 
     return (
-        <div className={`grid md:${gridSize} gap-2 p-2`}>
+        <div className={`grid md:${gridSize} gap-2 p-2 ${styleComponentType()}`}>
             {contacts.slice(0, length).map((contact: Contact) => {
                 return (
                     <ContactCard

@@ -1,4 +1,4 @@
-import ActionSlot from "@/ui-system/components/action-slot";
+import ActionSlot from "@/ui-system/components/action-slot/action-slot";
 
 const OverviewActionSlot = () => {
     return (

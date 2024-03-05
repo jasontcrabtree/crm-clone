@@ -1,5 +1,5 @@
 import { ContactsList } from "@/ui-system/components/contacts/ContactsList";
-import { NewContact } from "@/ui-system/components/contacts/NewContact";
+import { NewContact } from "@/ui-system/components/contacts/NewContactForm";
 
 const Page = () => {
     return (
