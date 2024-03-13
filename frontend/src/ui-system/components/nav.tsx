@@ -82,12 +82,12 @@ const AppNav = ({ session, user }: AuthProps) => {
                         Dashboard
                     </NavLinkitem>
                 </li>
-                <li>
+                {/* <li>
                     <NavLinkitem href="/interactions">
                         <BoltIcon className="w-6" />
                         Interactions
                     </NavLinkitem>
-                </li>
+                </li> */}
                 <li>
                     <NavLinkitem href="/contacts">
                         <UserGroupIcon className="w-6" />
@@ -100,13 +100,13 @@ const AppNav = ({ session, user }: AuthProps) => {
                         Organisations
                     </NavLinkitem>
                 </li>
-                <li>
+                {/* <li>
                     <NavLinkitem href="/connections">
                         <ArrowPathIcon className="w-6" />
                         Connections
                     </NavLinkitem>
-                </li>
-                <li>
+                </li> */}
+                {/* <li>
                     <NavLinkitem href="/messages">
                         <ChatBubbleLeftIcon className="w-6" />
                         Messages
@@ -117,7 +117,7 @@ const AppNav = ({ session, user }: AuthProps) => {
                         <QuestionMarkCircleIcon className="w-6" />
                         Support
                     </NavLinkitem>
-                </li>
+                </li> */}
 
                 {/* @ts-expect-error */}
                 {session && 1 === 3 ? (

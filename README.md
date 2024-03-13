@@ -16,3 +16,7 @@ NextJS app using the app router on the frontend and .Net WebAPI on the backend, 
 The backend has these features:
 
 - API key authorization required to acesss private routes
+
+## Resources
+
+https://app-router.vercel.app/parallel-routes

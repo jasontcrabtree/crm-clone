@@ -1,8 +1,9 @@
 'use server';
 
 import { unstable_noStore as noStore, revalidatePath } from 'next/cache';
-import { fetchUtil } from '../server/server-utils';
+import { convertFormDataToJson, fetchUtil } from '../server/server-utils';
 import { Contact } from '../types/contacts';
+import { createEntity } from './entities';
 
 const apiEndpoint = process.env.BACKEND_API_URL;
 
@@ -17,32 +18,48 @@ export const getAllContacts = async () => {
   return data;
 };
 
-export const newContact = async (prevState: any, formData: any) => {
-  console.log('formData', formData);
+export const getContactById = async (id: number) => {
+  noStore();
 
-  /*
-    "contactFirstName": "string",
-    "contactSurname": "string",
-    "contactEmail": "string",
-    "contactPhone": "string",
-    "contactNotes": "string",
-    */
+  const data = await fetchUtil({
+    method: 'GET',
+    url: `${apiEndpoint}/contacts/${id}`,
+  });
 
-  // const data = await fetchUtil({
+  return data;
+};
+
+export const createContact = async (prevState: null, formData: FormData) => {
+  // const data = convertFormDataToJson(formData);
+
+  // const newContact = await fetchUtil({
   //   method: 'POST',
   //   url: `${apiEndpoint}/contacts`,
   //   body: {
-  //     contactEmail: `jasondevtesting+${new Date().getMinutes()}.${new Date().getMilliseconds()}@gmail.com`,
-  //     contactFirstName: `Jason H${new Date().getHours()} M${new Date().getMinutes()} MS${new Date().getMilliseconds()}`,
-  //     contactPhone: '0273224961',
-  //     contactSurname: 'C',
-  //     contactNotes: 'Second demo in NextJS',
+  //     ...data,
   //   },
   // });
 
-  // revalidatePath('/contacts', 'layout');
+  // return newContact;
 
-  // console.log('newContact data', data);
+  const data = await createEntity(formData, 'contacts');
+  revalidatePath('/contacts', 'layout');
 
-  // return data;
+  return data;
 };
+
+// export const updateContact = async (prevState: Contact, formData: FormData) => {
+//   const data = convertFormDataToJson(formData);
+
+//   const updatedContact = await fetchUtil({
+//     method: 'PUT',
+//     url: `${apiEndpoint}/contacts/${prevState.id}`,
+//     body: {
+//       ...data,
+//     },
+//   });
+
+//   revalidatePath('/contacts', 'layout');
+
+//   return updatedContact;
+// };

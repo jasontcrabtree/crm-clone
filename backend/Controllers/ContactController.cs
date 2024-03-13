@@ -77,14 +77,6 @@ public class ContactController : BaseController
             return NotFound("Contact not found.");
         }
 
-        //     await LogInteractionAsync(
-        //       entityType: nameof(ContactModel),
-        //       entityId: id,
-        //       interactionType: InteractionType.ContactUpdated,
-        //       title: "Contact Updated",
-        //       details: new { }
-        //   );
-
         return Ok(new
         {
             message = "Contact updated successfully",
@@ -97,14 +89,6 @@ public class ContactController : BaseController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id)
     {
-        // var contactExists = await _contactService.GetContactById(id);
-        // if (contactExists == null)
-        // {
-        //     return NotFound("Contact not found.");
-        // }
-
-        // await _contactService.DeleteContactById(id);
-        // return NoContent();
         int userId = GetUserId();
         var contactExists = await _contactService.GetContactById(id, userId);
 

@@ -85,10 +85,10 @@ public class InteractionService : IInteractionService
     public async Task<IEnumerable<InteractionModel>> GetUserInteractionsForEntityAsync(string entityType, int entityId, int userId)
     {
         return await _context.Interactions
-         .Where(i => i.EntityType.Equals(entityType, StringComparison.OrdinalIgnoreCase)
-                     && i.EntityId == entityId
-                     && i.UserId == userId)
-         .ToListAsync();
+             .Where(i => i.EntityType.Equals(entityType)
+                         && i.EntityId == entityId
+                         && i.UserId == userId)
+             .ToListAsync();
     }
 
     public async Task<IEnumerable<InteractionModel>> GetAllUserInteractionsAsync(int userId)

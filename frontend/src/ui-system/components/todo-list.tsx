@@ -77,6 +77,13 @@ const TodoList = () => {
                                     <li>[ ] Logged in/out state</li>
                                 </ul>
                             </li>
+                            <li>
+                                [ ] Bugs
+                                <ul className="list-none pl-4">
+                                    <li>[ ] Contact creation fails when email exists, should return not crash</li>
+
+                                </ul>
+                            </li>
                         </ol>
                     </div>
                 </AlertDialogContent>

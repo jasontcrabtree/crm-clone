@@ -100,4 +100,12 @@ public class InteractionController : BaseController
         var interactions = await _interactionService.GetUserInteractionsForEntityAsync(entityType, entityId, userId);
         return Ok(interactions);
     }
+
+    [HttpGet("user/all")]
+    public async Task<IActionResult> GetAllInteractionsForUser()
+    {
+        int userId = GetUserId();
+        var interactions = await _interactionService.GetAllUserInteractionsAsync(userId);
+        return Ok(interactions);
+    }
 }

@@ -4,7 +4,6 @@ import '../ui-system/globals.css'
 import AuthProvider from '@/ui-system/components/auth-provider'
 import AppNav from '@/ui-system/components/nav'
 import { cookies } from 'next/headers'
-import TodoList from '@/ui-system/components/todo-list'
 import HistoryProvider from '@/ui-system/components/history-provider'
 import React from 'react'
 
@@ -53,7 +52,6 @@ const Layout = ({
             <AppNav user={user} session={session} />
             {children}
             {actionslot}
-            <TodoList />
           </body>
         </html>
       </AuthProvider>

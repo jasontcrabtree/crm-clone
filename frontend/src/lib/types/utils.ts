@@ -7,3 +7,9 @@ export type ApiReqContract = {
   };
   body?: string | null;
 };
+
+export type EntityTypes =
+  | 'contacts'
+  | 'organisations'
+  | 'interactions'
+  | 'connections';

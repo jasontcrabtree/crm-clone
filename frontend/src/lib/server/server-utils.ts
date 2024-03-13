@@ -50,3 +50,9 @@ export const fetchUtil = async ({
 
   return data;
 };
+
+export const convertFormDataToJson = (formData: FormData) => {
+  const convertedJson = Object.fromEntries(formData.entries());
+
+  return convertedJson;
+};
