@@ -44,6 +44,8 @@ const Layout = ({
 
   const { session, user } = getAuthSession();
 
+  console.log('actionslot', actionslot)
+
   return (
     <HistoryProvider>
       <AuthProvider session={session}>

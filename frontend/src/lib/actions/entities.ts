@@ -12,16 +12,13 @@ export const createEntity = async (
   formData: FormData,
   entityType: EntityTypes
 ) => {
-  console.log('FormData', convertFormDataToJson(formData), entityType);
   const newEntity = await fetchUtil({
     method: 'POST',
     url: `${apiEndpoint}/${entityType}`,
     body: convertFormDataToJson(formData),
   });
 
-  console.log('newEntity', newEntity);
-
-  //   revalidatePath(`/${entityType}`, 'layout');
+  revalidatePath(`/${entityType}`, 'layout');
   return newEntity;
 };
 

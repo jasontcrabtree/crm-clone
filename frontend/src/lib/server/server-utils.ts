@@ -43,8 +43,11 @@ export const fetchUtil = async ({
   });
 
   if (!apiRes.ok) {
+    console.log('ERROR apiRes', apiRes);
     throw new Error(apiRes.statusText);
   }
+
+  console.log('apiRes', apiRes);
 
   const { data } = await apiRes.json();
 

@@ -11,6 +11,8 @@ export const ContactsList = async (
 
     const contacts = await getAllContacts();
 
+    console.log('contacts', contacts)
+
     const gridSize = size === "full" ? "grid-cols-3" : "grid-cols-auto-fit";
 
     return (

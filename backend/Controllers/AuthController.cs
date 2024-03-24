@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 [ApiController]
 [Route("api/auth")]
-public class AuthController : ControllerBase
+public class AuthController : BaseController
 {
     private readonly IConfiguration _configuration;
     private readonly AppDbContext _context;
@@ -18,6 +18,14 @@ public class AuthController : ControllerBase
     {
         _configuration = configuration;
         _context = context;
+    }
+
+
+    [HttpGet("testUserId")]
+    public IActionResult TestUserId()
+    {
+        var userId = GetUserId();
+        return Ok($"User ID is: {userId}");
     }
 
     [HttpPost("register")]
@@ -73,6 +81,7 @@ public class AuthController : ControllerBase
         });
     }
 
+
     private string GenerateJwtToken(UserModel user)
     {
         var jwtKey = _configuration["Jwt:Key"];
@@ -97,4 +106,5 @@ public class AuthController : ControllerBase
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
     }
+
 }

@@ -15,6 +15,8 @@ export const getAllContacts = async () => {
     url: `${apiEndpoint}/contacts`,
   });
 
+  console.log('data', data);
+
   return data;
 };
 
@@ -43,10 +45,27 @@ export const createContact = async (prevState: null, formData: FormData) => {
   // return newContact;
 
   const data = await createEntity(formData, 'contacts');
+  console.log('data', data);
   revalidatePath('/contacts', 'layout');
 
-  return data;
+  return;
 };
+
+// export const createContact = async (prevState: null, formData: FormData) => {
+//   const data = convertFormDataToJson(formData);
+
+//   const newContact = await fetchUtil({
+//     method: 'POST',
+//     url: `${apiEndpoint}/contacts`,
+//     body: {
+//       ...data,
+//     },
+//   });
+
+//   revalidatePath('/contacts', 'layout');
+
+//   return newContact;
+// };
 
 // export const updateContact = async (prevState: Contact, formData: FormData) => {
 //   const data = convertFormDataToJson(formData);

@@ -33,3 +33,6 @@
    - [ ] Logged in/out state
 9. [ ] Bugs
    - [ ] Contact creation fails when email exists, should return not crash
+10. [ ] Enhancements
+
+- [ ] History Provider / Custom link should be an object with a label and an href, not just label

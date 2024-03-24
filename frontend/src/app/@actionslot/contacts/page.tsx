@@ -1,27 +1,36 @@
 'use client'
 
+import { getEntityById } from "@/lib/actions/entities";
+import { Contact } from "@/lib/types/contacts";
 import ActionSlot from "@/ui-system/components/action-slot/action-slot";
+import { EditContactForm } from "@/ui-system/components/contacts/EditContactForm";
 import { NewContactForm } from "@/ui-system/components/contacts/NewContactForm";
 import { Button } from "@/ui-system/components/ui/button";
 import { XCircleIcon } from "@heroicons/react/24/outline";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const ContactOverviewSlot = () => {
+const ContactOverviewSlot = async ({ params }: { params: any }) => {
+    console.log('params', params)
     const [actionParam, setActionParam] = useState("");
     const searchParams = useSearchParams();
+    const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
 
     useEffect(() => {
-        switch (searchParams.toString()) {
-            case 'new=':
-                setActionParam('new');
-                break;
-            case 'edit=':
-                setActionParam('edit');
-                break;
-            default:
-                setActionParam('');
-                break;
+        if (searchParams.get('new')) {
+            setActionParam('new');
+        } else if (searchParams.get('edit')) {
+
+            console.log('searchParams.get(edit)', searchParams.get('edit'))
+
+            setActionParam('edit');
+
+            const id = parseInt(searchParams.get('edit') as string);
+
+            (async () => {
+                const contactData: any = await getEntityById(id, 'contacts');
+                setSelectedContact(contactData)
+            })();
         }
 
     }, [searchParams])
@@ -47,7 +56,7 @@ const ContactOverviewSlot = () => {
                 )}
 
                 {actionParam === "edit" && (
-                    <div>Edit</div>
+                    <EditContactForm contact={selectedContact} />
                 )}
             </>
         </ActionSlot>
