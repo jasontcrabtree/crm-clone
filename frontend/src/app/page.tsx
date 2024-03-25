@@ -1,4 +1,5 @@
 import { getAllContacts } from "@/lib/actions/contacts";
+import { ContactsList } from "@/ui-system/components/contacts/ContactsList";
 import { DashboardSkeleton } from "@/ui-system/skeletons/dashboard";
 import { Suspense } from "react";
 
@@ -31,6 +32,9 @@ const ShowWeather = async () => {
 
   return (
     <div className="bg-yellow-100 w-full h-full grid grid-cols-3 gap-1 p-1">
+      <EntityCard>
+        <ContactsList length={3} size="compact" />
+      </EntityCard>
       {coreEntities.map((entity, key) => {
         return (
           <EntityCard key={key}>
@@ -56,31 +60,15 @@ const ShowWeather = async () => {
 }
 
 const Page = async () => {
-
   const contacts = await getAllContacts();
-  console.log(contacts)
-  // console.log('contacts', contacts);
+  // console.log(contacts)
 
   return (
     <>
-      <div className="flex flex-col w-full h-full">
-        <h1 className="bg-white w-full text-xl text-indigo-900 px-4 py-10  font-semibold">Dashboard</h1>
+      <div className="flex flex-col w-full h-full bg-red-500">
+        <h1 className="bg-whitex w-full text-xl text-indigo-900 px-4 py-10 font-semibold">Dashboard</h1>
         <Suspense fallback={<DashboardSkeleton />}>
           <ShowWeather />
-          <div>
-            {contacts.map((contact, index) => {
-              return (
-                <div key={index}>
-                  <h2>
-                    {contact.contactFirstName}
-                  </h2>
-                  <h3>
-                    {contact.contactNotes}
-                  </h3>
-                </div>
-              )
-            })}
-          </div>
         </Suspense>
       </div>
     </>

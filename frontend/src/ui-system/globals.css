@@ -14,3 +14,9 @@ input[type='submit'] {
   padding: 0.5rem 1rem;
   cursor: pointer;
 }
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}

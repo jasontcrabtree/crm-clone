@@ -6,6 +6,24 @@ namespace backend.Models
 {
     public enum InteractionType
     {
+
+        // Entity Types
+        ContactCreated,
+        ContactUpdated,
+        ContactDeleted,
+        OrganisationCreated,
+        OrganisationUpdated,
+        OrganisationDeleted,
+        ConnectionCreated,
+        ConnectionUpdated,
+        ConnectionDeleted,
+        InteractionCreated,
+        InteractionUpdated,
+        InteractionDeleted,
+        MessageCreated,
+        MessageUpdated,
+        MessageDeleted,
+
         // Communication Types
         RemoteMeeting,
         InPersonMeeting,
@@ -29,21 +47,26 @@ namespace backend.Models
         CustomerService,
         Dispute,
         Other
-
     }
-
 
     public class InteractionModel : BaseModel
     {
         public DateOnly InteractionDate { get; set; }
         public string InteractionTitle { get; set; } = string.Empty;
         public string InteractionNotes { get; set; } = string.Empty;
+        public string DetailedData { get; set; } = string.Empty;
 
         [Required]
         public InteractionType InteractionType { get; set; }
-        public ICollection<ConnectionModel>? ConnectionModels { get; }
 
-        // Relates interaction to the user who owns that model
+        /// <summary>
+        /// Optional custom interaction type for unique interactions
+        /// </summary>
+        public string? CustomInteractionType { get; set; }
+
+        public string EntityType { get; set; } = string.Empty;
+        public int EntityId { get; set; }
+
         public int UserId { get; set; }
         [ForeignKey("UserId")]
         [JsonIgnore]

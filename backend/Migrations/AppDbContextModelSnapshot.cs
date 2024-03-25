@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using backend.Models;
 
 #nullable disable
 
@@ -123,6 +122,20 @@ namespace backend.Migrations
                     b.Property<long>("CreatedTimeUnix")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("CustomInteractionType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DetailedData")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EntityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EntityType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateOnly>("InteractionDate")
                         .HasColumnType("date");
 
@@ -239,7 +252,7 @@ namespace backend.Migrations
                         .HasForeignKey("ContactId");
 
                     b.HasOne("backend.Models.InteractionModel", "InteractionModel")
-                        .WithMany("ConnectionModels")
+                        .WithMany()
                         .HasForeignKey("InteractionId");
 
                     b.HasOne("backend.Models.OrganisationModel", "OrganisationModel")
@@ -295,11 +308,6 @@ namespace backend.Migrations
                 });
 
             modelBuilder.Entity("backend.Models.ContactModel", b =>
-                {
-                    b.Navigation("ConnectionModels");
-                });
-
-            modelBuilder.Entity("backend.Models.InteractionModel", b =>
                 {
                     b.Navigation("ConnectionModels");
                 });

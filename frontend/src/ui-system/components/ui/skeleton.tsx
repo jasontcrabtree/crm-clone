@@ -1,4 +1,4 @@
-import { cn } from "@/lib/shad-utils"
+import { cn } from "@/lib/client/shad-utils"
 
 function Skeleton({
   className,

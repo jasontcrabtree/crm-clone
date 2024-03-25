@@ -42,6 +42,7 @@ public class ContactService : IContactService
     {
         return await _context.Contacts
                 .Where(contact => contact.UserId == UserId)
+                .OrderByDescending(c => c.Id)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -54,20 +55,6 @@ public class ContactService : IContactService
     }
     public async Task<ContactModel?> UpdateContactById(int id, ContactModel model, int userId)
     {
-        // var contact = await _context.Contacts.FindAsync(id);
-        // if (contact == null)
-        // {
-        //     return null;
-        // }
-
-        // contact.ContactFirstName = model.ContactFirstName;
-        // contact.ContactSurname = model.ContactSurname;
-        // contact.ContactEmail = model.ContactEmail;
-        // contact.ContactPhone = model.ContactPhone;
-        // contact.ContactNotes = model.ContactNotes;
-
-        // await _context.SaveChangesAsync();
-        // return contact;
         var contact = await _context.Contacts.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
         if (contact == null)
         {
@@ -86,12 +73,6 @@ public class ContactService : IContactService
 
     public async Task DeleteContactById(int id, int userId)
     {
-        // var contact = await _context.Contacts.FindAsync(id);
-        // if (contact != null)
-        // {
-        //     _context.Contacts.Remove(contact);
-        //     await _context.SaveChangesAsync();
-        // }
         var contact = await _context.Contacts.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
         if (contact != null)
         {

@@ -3,7 +3,7 @@
 import { DragHandleDots2Icon } from "@radix-ui/react-icons"
 import * as ResizablePrimitive from "react-resizable-panels"
 
-import { cn } from "@/lib/shad-utils"
+import { cn } from "@/lib/client/shad-utils"
 
 type ImperativePanelHandle = ResizablePrimitive.ImperativePanelHandle;
 

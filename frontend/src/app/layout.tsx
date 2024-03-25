@@ -4,8 +4,8 @@ import '../ui-system/globals.css'
 import AuthProvider from '@/ui-system/components/auth-provider'
 import AppNav from '@/ui-system/components/nav'
 import { cookies } from 'next/headers'
-import TodoList from '@/ui-system/components/todo-list'
 import HistoryProvider from '@/ui-system/components/history-provider'
+import React from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -34,28 +34,28 @@ export const metadata: Metadata = {
   creator: "Jason Crabtree",
 }
 
-const RootLayout = ({
+const Layout = ({
   children,
+  actionslot
 }: {
-  children: React.ReactNode
+  children: React.ReactNode,
+  actionslot: React.ReactNode
 }) => {
-
-
   const { session, user } = getAuthSession();
 
   return (
-    <AuthProvider session={session}>
-      <HistoryProvider>
+    <HistoryProvider>
+      <AuthProvider session={session}>
         <html lang="en">
-          <body className={`${inter.className} bg-white flex sm:flex-row flex-col`}>
+          <body className={`${inter.className} bg-white flex sm:flex-row flex-col w-full`}>
             <AppNav user={user} session={session} />
             {children}
-            <TodoList />
+            {actionslot}
           </body>
         </html>
-      </HistoryProvider>
-    </AuthProvider>
+      </AuthProvider>
+    </HistoryProvider>
   )
 }
 
-export default RootLayout;
+export default Layout;

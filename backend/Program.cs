@@ -8,7 +8,6 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 
-
 // Configure JWT Authentication and add Authorization
 var jwtKey = builder.Configuration["Jwt:Key"];
 if (string.IsNullOrEmpty(jwtKey))
@@ -18,6 +17,8 @@ if (string.IsNullOrEmpty(jwtKey))
 var key = Encoding.ASCII.GetBytes(jwtKey);
 
 // Add services to the container.
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -43,6 +44,7 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddScoped<InteractionLoggingService>();
 builder.Services.AddScoped<IContactService, ContactService>();
 builder.Services.AddScoped<IOrganisationService, OrganisationService>();
 builder.Services.AddScoped<IInteractionService, InteractionService>();

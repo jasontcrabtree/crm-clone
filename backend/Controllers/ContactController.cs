@@ -45,14 +45,6 @@ public class ContactController : BaseController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get(int id)
     {
-        // var contact = await _contactService.GetContactById(id);
-
-        // if (contact == null)
-        // {
-        //     return NotFound("Contact not found.");
-        // }
-        // return Ok(new { data = contact });
-
         int userId = GetUserId();
         var contact = await _contactService.GetContactById(id, userId);
 
@@ -68,13 +60,7 @@ public class ContactController : BaseController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(int id, [FromBody] ContactModel model)
     {
-        // var updatedContact = await _contactService.UpdateContactById(id, model);
-        // if (updatedContact == null)
-        // {
-        //     return NotFound("Contact not found.");
-        // }
 
-        // return Ok(new { message = "Contact updated successfully", data = updatedContact });
         int userId = GetUserId();
         var updatedContact = await _contactService.UpdateContactById(id, model, userId);
 
@@ -83,7 +69,11 @@ public class ContactController : BaseController
             return NotFound("Contact not found.");
         }
 
-        return Ok(new { message = "Contact updated successfully", data = updatedContact });
+        return Ok(new
+        {
+            message = "Contact updated successfully",
+            data = updatedContact
+        });
     }
 
     [HttpDelete("{id}")]
@@ -91,14 +81,6 @@ public class ContactController : BaseController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id)
     {
-        // var contactExists = await _contactService.GetContactById(id);
-        // if (contactExists == null)
-        // {
-        //     return NotFound("Contact not found.");
-        // }
-
-        // await _contactService.DeleteContactById(id);
-        // return NoContent();
         int userId = GetUserId();
         var contactExists = await _contactService.GetContactById(id, userId);
 

@@ -92,4 +92,20 @@ public class InteractionController : BaseController
         await _interactionService.DeleteInteractionById(id, userId);
         return NoContent();
     }
+
+    [HttpGet("entity/{entityType}/{entityId}")]
+    public async Task<IActionResult> GetInteractionsForEntity(string entityType, int entityId)
+    {
+        int userId = GetUserId();
+        var interactions = await _interactionService.GetUserInteractionsForEntityAsync(entityType, entityId, userId);
+        return Ok(interactions);
+    }
+
+    [HttpGet("user/all")]
+    public async Task<IActionResult> GetAllInteractionsForUser()
+    {
+        int userId = GetUserId();
+        var interactions = await _interactionService.GetAllUserInteractionsAsync(userId);
+        return Ok(interactions);
+    }
 }

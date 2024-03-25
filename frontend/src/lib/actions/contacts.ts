@@ -1,32 +1,80 @@
-import { unstable_noStore as noStore } from 'next/cache';
+'use server';
+
+import { unstable_noStore as noStore, revalidatePath } from 'next/cache';
+import { convertFormDataToJson, fetchUtil } from '../server/server-utils';
+import { Contact } from '../types/contacts';
+import { createEntity } from './entities';
 
 const apiEndpoint = process.env.BACKEND_API_URL;
-const apiKey = process.env.CLIENT_SERVER_API_KEY;
 
 export const getAllContacts = async () => {
-  // Api key needed to access backend
-  if (!apiKey) {
-    throw new Error('API key is undefined');
-  }
-
   noStore();
 
-  const options = {
+  const data = await fetchUtil({
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-API-KEY': apiKey,
-    },
-    // body: JSON.stringify(jsonFormObject),
-  };
+    url: `${apiEndpoint}/contacts`,
+  });
+  return data;
+};
 
-  const apiRes = await fetch(`${apiEndpoint}/contacts`, options);
+export const getContactById = async (id: number) => {
+  noStore();
 
-  if (!apiRes.ok) {
-    throw new Error(apiRes.statusText);
-  }
-
-  const { data } = await apiRes.json();
+  const data = await fetchUtil({
+    method: 'GET',
+    url: `${apiEndpoint}/contacts/${id}`,
+  });
 
   return data;
 };
+
+export const createContact = async (prevState: null, formData: FormData) => {
+  // const data = convertFormDataToJson(formData);
+
+  // const newContact = await fetchUtil({
+  //   method: 'POST',
+  //   url: `${apiEndpoint}/contacts`,
+  //   body: {
+  //     ...data,
+  //   },
+  // });
+
+  // return newContact;
+
+  const data = await createEntity(formData, 'contacts');
+  revalidatePath('/contacts', 'layout');
+
+  return;
+};
+
+// export const createContact = async (prevState: null, formData: FormData) => {
+//   const data = convertFormDataToJson(formData);
+
+//   const newContact = await fetchUtil({
+//     method: 'POST',
+//     url: `${apiEndpoint}/contacts`,
+//     body: {
+//       ...data,
+//     },
+//   });
+
+//   revalidatePath('/contacts', 'layout');
+
+//   return newContact;
+// };
+
+// export const updateContact = async (prevState: Contact, formData: FormData) => {
+//   const data = convertFormDataToJson(formData);
+
+//   const updatedContact = await fetchUtil({
+//     method: 'PUT',
+//     url: `${apiEndpoint}/contacts/${prevState.id}`,
+//     body: {
+//       ...data,
+//     },
+//   });
+
+//   revalidatePath('/contacts', 'layout');
+
+//   return updatedContact;
+// };
