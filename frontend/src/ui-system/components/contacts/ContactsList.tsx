@@ -2,16 +2,13 @@
 
 import { getAllContacts } from "@/lib/actions/contacts";
 import { Contact } from "@/lib/types/contacts";
-import ContactCard from "./ContactCard";
 import { styleComponentType } from "@/lib/utils";
+import ContactCard from "./ContactCard";
 
 export const ContactsList = async (
     { size, length = 7 }: { size: string, length?: number }
 ) => {
-
     const contacts = await getAllContacts();
-
-    console.log('contacts', contacts)
 
     const gridSize = size === "full" ? "grid-cols-3" : "grid-cols-auto-fit";
 

@@ -14,8 +14,6 @@ export const EditContactForm = ({ contact }: { contact: Contact | null }) => {
 
     const [state, formAction] = useFormState(createContact, initialState)
 
-    console.log('contactData', contact)
-
     return (
         <div className={`${styleComponentType()}`}>
             <form className="flex flex-col gap-2" action={formAction}>

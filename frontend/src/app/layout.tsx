@@ -41,10 +41,7 @@ const Layout = ({
   children: React.ReactNode,
   actionslot: React.ReactNode
 }) => {
-
   const { session, user } = getAuthSession();
-
-  console.log('actionslot', actionslot)
 
   return (
     <HistoryProvider>

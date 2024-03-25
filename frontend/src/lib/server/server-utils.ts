@@ -47,8 +47,6 @@ export const fetchUtil = async ({
     throw new Error(apiRes.statusText);
   }
 
-  console.log('apiRes', apiRes);
-
   const { data } = await apiRes.json();
 
   return data;

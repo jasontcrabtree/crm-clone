@@ -1,6 +1,9 @@
+'use client';
 import { styleComponentType } from "@/lib/utils";
 import { ContactsList } from "@/ui-system/components/contacts/ContactsList";
+import ExpandedEntity from "@/ui-system/components/contacts/ExpandedContact";
 import NewContactButton from "@/ui-system/components/contacts/NewContactButton";
+import { useState } from "react";
 
 const EntityActivity = () => {
     return (
@@ -36,6 +39,7 @@ const EntitySearch = ({ label }: { label: string }) => {
 }
 
 const Page = async () => {
+    const [expand, setExpand] = useState(false);
 
     return (
         <div className={`w-full bg-zinc-50 max-h-screen overflow-y-scroll ${styleComponentType()}`}>
@@ -52,6 +56,10 @@ const Page = async () => {
                 <EntitySearch label="Search Contacts" />
             </div>
             <ContactsList size="full" length={32} />
+            <button onClick={(() => { setExpand(!expand) })}>
+                Render
+            </button>
+            {expand && <ExpandedEntity id={61} />}
         </div>
     )
 }

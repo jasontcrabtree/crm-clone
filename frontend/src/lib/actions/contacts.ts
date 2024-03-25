@@ -14,9 +14,6 @@ export const getAllContacts = async () => {
     method: 'GET',
     url: `${apiEndpoint}/contacts`,
   });
-
-  console.log('data', data);
-
   return data;
 };
 
@@ -45,7 +42,6 @@ export const createContact = async (prevState: null, formData: FormData) => {
   // return newContact;
 
   const data = await createEntity(formData, 'contacts');
-  console.log('data', data);
   revalidatePath('/contacts', 'layout');
 
   return;
