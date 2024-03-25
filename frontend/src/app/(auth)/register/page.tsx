@@ -1,5 +1,3 @@
-'use server'
-
 import { registerUser } from "@/lib/actions/register-user";
 
 const UserRegistration = () => {
