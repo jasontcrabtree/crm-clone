@@ -7,7 +7,6 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 // Configure JWT Authentication and add Authorization
 var jwtKey = builder.Configuration["Jwt:Key"];
 if (string.IsNullOrEmpty(jwtKey))
@@ -82,17 +81,19 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
     app.UseCors("MyNextJsAppPolicy"); // Enable CORS for local development
 }
 
-app.UseHttpsRedirection();
-app.UseRouting();
-app.UseMiddleware<ApiMiddleware>();
+app.UseSwagger();
+app.UseSwaggerUI();
 
+app.UseHttpsRedirection();
+
+app.UseMiddleware<ApiMiddleware>();
+app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 
 // Weather Forecast Endpoint
