@@ -15,7 +15,9 @@ export const createEntity = async (
   const newEntity = await fetchUtil({
     method: 'POST',
     url: `${apiEndpoint}/${entityType}`,
-    body: convertFormDataToJson(formData),
+    body: {
+      ...Object.fromEntries(formData.entries()),
+    },
   });
 
   revalidatePath(`/${entityType}`, 'layout');
@@ -55,7 +57,7 @@ export const updateEntityById = async (
     method: 'PUT',
     url: `${apiEndpoint}/${entityType}/${id}`,
     body: {
-      ...convertFormDataToJson(formData),
+      ...Object.fromEntries(formData.entries()),
     },
   });
 
@@ -65,11 +67,13 @@ export const updateEntityById = async (
 export const deleteEntityById = async (id: number, entityType: EntityTypes) => {
   noStore();
 
-  await fetchUtil({
+  const res = await fetchUtil({
     method: 'DELETE',
     url: `${apiEndpoint}/${entityType}/${id}`,
   });
 
   revalidatePath(`/${entityType}`, 'layout');
-  redirect(`/${entityType}`);
+  // redirect(`/${entityType}`);
+
+  return res;
 };

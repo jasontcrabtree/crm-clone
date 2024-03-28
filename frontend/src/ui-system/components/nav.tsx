@@ -13,7 +13,6 @@ import { ArrowPathIcon, BoltIcon, BuildingOffice2Icon, ChatBubbleLeftIcon, Globe
 
 import { ArrowPathIcon as MicroArrowPathIcon, BoltIcon as MicroBoltIcon, ChatBubbleLeftIcon as MicroBuildingOffice2Icon, ChatBubbleLeftIcon as MicroChatBubbleLeftIcon, GlobeAsiaAustraliaIcon as MicroGlobeAsiaAustraliaIcon, HomeIcon as MicroHomeIcon, QuestionMarkCircleIcon as MicroQuestionMarkCircleIcon, UserGroupIcon as MicroUserGroupIcon, UserIcon as MicroUserIcon } from '@heroicons/react/16/solid'
 import { Button } from "./ui/button";
-import { styleComponentType } from "@/lib/utils";
 
 const NavLinkitem = ({ href, children, className }: {
     href: string, children: React.ReactNode, className?: string
@@ -69,7 +68,7 @@ const AppNav = ({ session, user }: AuthProps) => {
     const { history } = useHistoryContext();
 
     return (
-        <nav className={`bg-slate-200 w-full sm:min-w-24 sm:max-w-48 sm:h-screen gap-6  pt-10 px-3 max-h-screen h-full flex flex-col content-start ${styleComponentType()}`}>
+        <nav className={`bg-slate-200 w-full sm:min-w-24 sm:max-w-48 sm:h-screen gap-6  pt-10 px-3 max-h-screen h-full flex flex-col content-start`}>
             <span className="text-xl font-bold px-1 text-rose-600 flex flex-row gap-2 items-center">
                 <LogoIcon />
                 Bondbridge

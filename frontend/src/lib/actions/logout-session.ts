@@ -4,8 +4,6 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 const logoutSession = async (): Promise<void> => {
-  console.log('logging out');
-
   cookies().delete('crm-clone.token');
   cookies().delete('crm-clone.username');
 
