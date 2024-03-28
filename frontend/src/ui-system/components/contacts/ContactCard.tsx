@@ -1,7 +1,7 @@
 'use client';
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
-import { Contact } from "@/lib/types/contacts";
+import { Contact } from "@/lib/types/entities";
 import { deleteEntityById } from "@/lib/actions/entities";
 
 const ContactCard = ({ contact }: { contact: Contact }) => {

@@ -1,11 +1,11 @@
 'use client';
 
 import { getEntityById } from "@/lib/actions/entities";
-import { Contact } from "@/lib/types/contacts";
+import { Contact } from "@/lib/types/entities";
 import { UserIcon } from "@heroicons/react/16/solid";
 import { useEffect, useState } from "react";
 
-const ExpandedEntity = async ({ id }: { id: number }) => {
+const ExpandedEntity = ({ id }: { id: number }) => {
 
     const [contactData, setContactData] = useState<Contact | null>(null);
 

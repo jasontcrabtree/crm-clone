@@ -2,7 +2,7 @@
 
 import { unstable_noStore as noStore, revalidatePath } from 'next/cache';
 import { convertFormDataToJson, fetchUtil } from '../server/server-utils';
-import { Contact } from '../types/contacts';
+import { Contact } from '../types/entities';
 import { EntityTypes } from '../types/utils';
 import { redirect } from 'next/navigation';
 

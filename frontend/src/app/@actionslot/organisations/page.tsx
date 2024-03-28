@@ -9,7 +9,7 @@ import { getEntityById } from "@/lib/actions/entities";
 import { Button } from "@/ui-system/components/ui/button";
 import { XCircleIcon } from "@heroicons/react/16/solid";
 
-const OrganisationActionSlot = async () => {
+const OrganisationActionSlot = () => {
     const searchParams = useSearchParams();
 
     const [actionState, setActionState] = useState('default');

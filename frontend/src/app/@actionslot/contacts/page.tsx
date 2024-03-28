@@ -10,7 +10,7 @@ import { XCircleIcon } from "@heroicons/react/24/outline";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const ContactOverviewSlot = async ({ params }: { params: any }) => {
+const ContactOverviewSlot = ({ params }: { params: any }) => {
     const [actionParam, setActionParam] = useState("");
     const searchParams = useSearchParams();
     const [selectedContact, setSelectedContact] = useState<Contact | null>(null);

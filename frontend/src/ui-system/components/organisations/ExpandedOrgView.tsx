@@ -5,7 +5,7 @@ import { Organisation } from "@/lib/types/entities";
 import { UserIcon } from "@heroicons/react/16/solid";
 import { useEffect, useState } from "react";
 
-const ExpandedOrgView = async ({ id }: { id: number }) => {
+const ExpandedOrgView = ({ id }: { id: number }) => {
 
     const [contactData, setContactData] = useState<Organisation | null>(null);
 
