@@ -1,7 +1,6 @@
 import { registerUser } from "@/lib/actions/register-user";
 
-const UserRegistration = () => {
-
+export default function UserRegistration() {
     return (
         <div>Login
             <form action={registerUser}>
@@ -12,5 +11,3 @@ const UserRegistration = () => {
         </div>
     )
 }
-
-export default UserRegistration;
