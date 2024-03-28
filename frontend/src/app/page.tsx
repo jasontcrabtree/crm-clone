@@ -60,16 +60,16 @@ const ShowWeather = async () => {
 }
 
 const Page = async () => {
-  const contacts = await getAllContacts();
+  // const contacts = await getAllContacts();
   // console.log(contacts)
 
   return (
     <>
       <div className="flex flex-col w-full h-full bg-red-500">
         <h1 className="bg-white w-full text-xl text-indigo-900 px-4 py-10 font-semibold">Dashboard</h1>
-        <Suspense fallback={<DashboardSkeleton />}>
+        {/* <Suspense fallback={<DashboardSkeleton />}>
           <ShowWeather />
-        </Suspense>
+        </Suspense> */}
       </div>
     </>
   )
