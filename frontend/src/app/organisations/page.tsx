@@ -17,7 +17,7 @@ const Page = async () => {
                 <EntitySearch label="Search Contacts" /> */}
 
             </div>
-            <OrgList size="full" length={32} />
+            {/* <OrgList size="full" length={32} /> */}
         </div>
     )
 }
