@@ -10,14 +10,14 @@ export const fetchUtil = async ({
   method,
   url,
   body,
-  cache = 'no-store',
 }: {
   method: string;
   url: string;
   body?: {};
-  cache?: 'no-store' | 'force-cache';
 }) => {
   const apiKey = process.env.CLIENT_SERVER_API_KEY;
+
+  console.log('url', url);
 
   if (!apiKey) {
     throw new Error('API key is undefined');
@@ -38,13 +38,30 @@ export const fetchUtil = async ({
 
   const apiRes = await fetch(url, {
     ...options,
-    cache: cache,
     next: { tags: ['contacts'] },
   });
 
   if (!apiRes.ok) {
-    console.log('ERROR apiRes', apiRes);
+    let errorDetails = '';
+    try {
+      const errorResponse = await apiRes.json();
+      errorDetails = JSON.stringify(errorResponse);
+    } catch (error) {
+      errorDetails = 'Failed to parse error response body';
+    }
+
+    console.error('API Request Failed:', {
+      url,
+      status: apiRes.status,
+      statusText: apiRes.statusText,
+      errorDetails,
+    });
+
     throw new Error(apiRes.statusText);
+  }
+
+  if (apiRes.status === 204) {
+    return null;
   }
 
   const { data } = await apiRes.json();

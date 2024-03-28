@@ -1,17 +1,17 @@
 'use client';
 
 import { getEntityById } from "@/lib/actions/entities";
-import { Contact } from "@/lib/types/entities";
+import { Organisation } from "@/lib/types/entities";
 import { UserIcon } from "@heroicons/react/16/solid";
 import { useEffect, useState } from "react";
 
-const ExpandedEntity = ({ id }: { id: number }) => {
+const ExpandedOrgView = ({ id }: { id: number }) => {
 
-    const [contactData, setContactData] = useState<Contact | null>(null);
+    const [contactData, setContactData] = useState<Organisation | null>(null);
 
     useEffect(() => {
         (async () => {
-            const contactData: Contact = await getEntityById(id, 'contacts');
+            const contactData: Organisation = await getEntityById(id, 'contacts');
             console.log('contactData', contactData)
             setContactData(contactData)
         })
@@ -21,7 +21,7 @@ const ExpandedEntity = ({ id }: { id: number }) => {
     return (
         <div className="w-full bg-zinc-50">
             Expanded
-            <div>
+            {/* <div>
                 <UserIcon className="w-6" />
                 {contactData?.contactFirstName
                     && (<h1>{contactData?.contactFirstName}</h1>)}
@@ -32,9 +32,9 @@ const ExpandedEntity = ({ id }: { id: number }) => {
 
                 {contactData?.contactPhone && (<p>{contactData?.contactPhone}</p>)}
             </div>
-            {contactData?.contactNotes && (<p>{contactData.contactNotes}</p>)}
+            {contactData?.contactNotes && (<p>{contactData.contactNotes}</p>)} */}
         </div>
     )
 }
 
-export default ExpandedEntity;
+export default ExpandedOrgView;

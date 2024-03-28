@@ -38,8 +38,6 @@ export const registerUser = async (formData: FormData) => {
 
     const loginData = await loginRes.json();
 
-    console.log('loginData', loginData);
-
     cookies().set('crm-clone.token', loginData.token);
     cookies().set('crm-clone.username', loginData.username);
 

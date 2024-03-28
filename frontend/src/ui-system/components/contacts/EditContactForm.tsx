@@ -1,22 +1,23 @@
-'use client'
-
-import { createContact, getContactById } from "@/lib/actions/contacts";
+import React from "react";
 import { Button } from "../ui/button";
-import { useFormState } from "react-dom";
-import { styleComponentType } from "@/lib/utils";
-import { Contact } from "@/lib/types/contacts";
+import { Contact } from "@/lib/types/entities";
+import { updateEntityById } from "@/lib/actions/entities";
 
 export const EditContactForm = ({ contact }: { contact: Contact | null }) => {
-    const initialState: any = {
-        message: null,
-        errors: {}
+
+    const handleEditForm = async (formData: FormData) => {
+        if (!contact) throw new Error('Contact required');
+
+        console.log('formData', formData)
+
+        const update = await updateEntityById(contact.id, formData, 'contacts');
+
+        console.log('update', update);
     }
 
-    const [state, formAction] = useFormState(createContact, initialState)
-
     return (
-        <div className={`${styleComponentType()}`}>
-            <form className="flex flex-col gap-2" action={formAction}>
+        <div className="">
+            <form className="flex flex-col gap-2" action={handleEditForm}>
                 <label htmlFor="contactFirstName">
                     <span className="font-medium">
                         First Name

@@ -1,4 +1,3 @@
-import { styleComponentType } from "@/lib/utils";
 import { ContactsList } from "@/ui-system/components/contacts/ContactsList";
 import NewContactButton from "@/ui-system/components/contacts/NewContactButton";
 
@@ -37,7 +36,7 @@ const EntitySearch = ({ label }: { label: string }) => {
 
 const Page = async () => {
     return (
-        <div className={`w-full bg-zinc-50 max-h-screen overflow-y-scroll ${styleComponentType()}`}>
+        <div className={`w-full bg-zinc-50 max-h-screen overflow-y-scroll`}>
             <div className="flex flex-row justify-between gap-2 w-full p-4">
                 <h1 className="text-xl font-bold
             text-teal-700">

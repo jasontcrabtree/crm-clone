@@ -1,7 +1,6 @@
 import ActionSlot from "@/ui-system/components/action-slot/action-slot";
 
-const OverviewActionSlot = ({ params }: { params: any }) => {
-    console.log('params', params)
+const OverviewActionSlot = () => {
     return (
         <ActionSlot>
             <h2>Action Slot</h2>

@@ -6,30 +6,33 @@ import { createEntity } from './entities';
 
 const apiEndpoint = process.env.BACKEND_API_URL;
 
-export const getAllContacts = async () => {
+export const getAllOrganisations = async () => {
   noStore();
 
   const data = await fetchUtil({
     method: 'GET',
-    url: `${apiEndpoint}/contacts`,
+    url: `${apiEndpoint}/organisations`,
   });
   return data;
 };
 
-export const getContactById = async (id: number) => {
+export const getOrganisationById = async (id: number) => {
   noStore();
 
   const data = await fetchUtil({
     method: 'GET',
-    url: `${apiEndpoint}/contacts/${id}`,
+    url: `${apiEndpoint}/organisations/${id}`,
   });
 
   return data;
 };
 
-export const createContact = async (prevState: null, formData: FormData) => {
-  const data = await createEntity(formData, 'contacts');
-  revalidatePath('/contacts', 'layout');
+export const createOrganisation = async (
+  prevState: null,
+  formData: FormData
+) => {
+  const data = await createEntity(formData, 'organisations');
+  revalidatePath('/organisations', 'layout');
 
   return data;
 };

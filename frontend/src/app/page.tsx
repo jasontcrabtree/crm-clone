@@ -44,7 +44,7 @@ const ShowWeather = async () => {
           </EntityCard>
         )
       })}
-      <div className=" col-span-full flex flex-row gap-2">
+      <div className="col-span-full flex flex-row gap-2">
         {weather.map((item: any, key: number) => {
           return (
             <div key={key} className="bg-white p-2 pb-4 h-fit">
@@ -66,7 +66,7 @@ const Page = async () => {
   return (
     <>
       <div className="flex flex-col w-full h-full bg-red-500">
-        <h1 className="bg-whitex w-full text-xl text-indigo-900 px-4 py-10 font-semibold">Dashboard</h1>
+        <h1 className="bg-white w-full text-xl text-indigo-900 px-4 py-10 font-semibold">Dashboard</h1>
         <Suspense fallback={<DashboardSkeleton />}>
           <ShowWeather />
         </Suspense>

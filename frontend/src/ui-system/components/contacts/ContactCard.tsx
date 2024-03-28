@@ -1,24 +1,26 @@
 'use client';
-
-import CustomLink from "../custom-link";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
-import { Contact } from "@/lib/types/contacts";
+import { Contact } from "@/lib/types/entities";
+import { deleteEntityById } from "@/lib/actions/entities";
 
 const ContactCard = ({ contact }: { contact: Contact }) => {
     const router = useRouter()
 
-    const contactUrl = `/contacts/${contact.id}`
-
     return (
         <div className="flex flex-col gap-2 border-gray-200 border-[1px] rounded p-2">
-            <Button onClick={() => router.push(`/contacts?edit=${contact.id}`)}>
-                Edit
-            </Button>
+            <div className="flex flex-row gap-1 align-center">
+                <Button onClick={() => router.push(`/contacts?edit=${contact.id}`)}>
+                    Edit
+                </Button>
+                <Button onClick={(() => deleteEntityById(contact.id, 'contacts'))}>
+                    Delete
+                </Button>
+            </div>
             <h2>
-                <CustomLink href={encodeURI(contactUrl)} classes="text-indigo-700 underline">
+                <p className="text-indigo-700">
                     {contact.contactFirstName && contact.contactFirstName} {contact.contactSurname && contact.contactSurname}
-                </CustomLink>
+                </p>
             </h2>
             <h3>
                 {contact.contactNotes}
