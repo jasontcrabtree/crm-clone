@@ -2,21 +2,10 @@ using System.Security.Claims;
 
 public static class UserIdentityExtensions
 {
-    // public static int? GetUserId(this ClaimsPrincipal user)
-    // {
-    //     if (user.Identity is ClaimsIdentity identity)
-    //     {
-    //         var userIdClaim = identity.FindFirst("userId");
-    //         if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
-    //         {
-    //             return userId;
-    //         }
-    //     }
-
-    //     return null;
-    // }
     public static int? GetUserId(this ClaimsPrincipal user, ILogger logger)
     {
+        logger.LogInformation($"Claims available: {string.Join(", ", user.Claims.Select(c => $"{c.Type}: {c.Value}"))}");
+
         if (user.Identity is ClaimsIdentity identity)
         {
             var userIdClaim = identity.FindFirst("userId");

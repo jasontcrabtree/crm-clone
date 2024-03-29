@@ -15,35 +15,20 @@ public abstract class BaseController : ControllerBase
 
     protected InteractionLoggingService InteractionLoggingService => _interactionLoggingService;
 
-    public static int? GetUserId(this ClaimsPrincipal user, ILogger logger)
+    protected int GetUserId()
     {
-        logger.LogInformation($"Claims available: {string.Join(", ", user.Claims.Select(c => $"{c.Type}: {c.Value}"))}");
-
-        if (user.Identity is ClaimsIdentity identity)
+        var userId = User.GetUserId(_logger);
+        if (!userId.HasValue)
         {
-            var userIdClaim = identity.FindFirst("userId");
-            if (userIdClaim != null)
-            {
-                if (int.TryParse(userIdClaim.Value, out int userId))
-                {
-                    return userId;
-                }
-                else
-                {
-                    logger.LogError($"User ID claim is not a valid integer: {userIdClaim.Value}");
-                }
-            }
-            else
-            {
-                logger.LogError("User ID claim not found in the user claims.");
-            }
+            _logger.LogError("User ID claim not present or is invalid.");
+            throw new InvalidOperationException("User ID claim not present or is invalid.");
         }
         else
         {
-            logger.LogError("User identity is not a ClaimsIdentity or is missing.");
+            _logger.LogInformation($"Retrieved User ID: {userId.Value}");
         }
 
-        return null;
+        return userId.Value;
     }
 
     protected async Task LogInteractionAsync(string entityType, int entityId, InteractionType interactionType, string title, object details, string? customInteractionType = null)
