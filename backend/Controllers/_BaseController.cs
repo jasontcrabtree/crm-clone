@@ -2,7 +2,6 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using backend.Models;
 using Microsoft.Extensions.Logging;
-
 public abstract class BaseController : ControllerBase
 {
     private readonly InteractionLoggingService _interactionLoggingService;
@@ -18,15 +17,15 @@ public abstract class BaseController : ControllerBase
 
     protected int GetUserId()
     {
-        try
+        var userId = User.GetUserId();
+        if (!userId.HasValue)
         {
-            return User.GetUserId();  // Utilize the extension method
+            var errorMessage = "User ID claim not present or is invalid.";
+            _logger.LogError(errorMessage);
+            throw new InvalidOperationException(errorMessage);
         }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to retrieve user ID");
-            throw new InvalidOperationException("User ID not found or invalid.", ex);
-        }
+
+        return userId.Value;
     }
 
     protected async Task LogInteractionAsync(string entityType, int entityId, InteractionType interactionType, string title, object details, string? customInteractionType = null)

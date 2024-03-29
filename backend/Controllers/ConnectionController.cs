@@ -99,7 +99,7 @@ public class ConnectionController : BaseController
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllAggregate([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 20)
     {
-        int userId = User.GetUserId();
+        int userId = GetUserId();
 
         var connections = await _connectionService.GetAllAggregateConnections(userId, pageNumber, pageSize);
         return Ok(new { data = connections });

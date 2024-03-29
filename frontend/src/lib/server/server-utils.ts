@@ -17,8 +17,6 @@ export const fetchUtil = async ({
 }) => {
   const apiKey = process.env.CLIENT_SERVER_API_KEY;
 
-  console.log('url', url);
-
   if (!apiKey) {
     throw new Error('API key is undefined');
   }

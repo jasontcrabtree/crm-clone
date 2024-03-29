@@ -180,10 +180,9 @@ const AppNav = ({ session, user }: AuthProps) => {
                     )}
             </div>
 
-
             <div className="flex flex-col gap-2 mt-auto mb-8 ">
                 {user?.username ?
-                    (<NavLinkitem href="/profile" className="text-sm font-medium text-indigo-800">
+                    (<NavLinkitem href="/" className="text-sm font-medium text-indigo-800">
                         <UserIcon className="w-6" />
                         {user.username}
                     </NavLinkitem>)

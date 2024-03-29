@@ -23,7 +23,7 @@ public class OrganisationController : BaseController
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 20)
     {
-        int userId = User.GetUserId();
+        int userId = GetUserId();
         var organisations = await _organisationService.GetAllOrganisations(userId, pageNumber, pageSize);
         return Ok(new { data = organisations });
     }
@@ -33,7 +33,7 @@ public class OrganisationController : BaseController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] OrganisationModel model)
     {
-        int userId = User.GetUserId();
+        int userId = GetUserId();
         if (await _organisationService.OrganisationExists(model.OrganisationName))
         {
             return BadRequest("Organisation already exists.");
@@ -57,7 +57,7 @@ public class OrganisationController : BaseController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get(int id)
     {
-        int userId = User.GetUserId();
+        int userId = GetUserId();
         var organisation = await _organisationService.GetOrganisationById(id, userId);
 
         if (organisation == null)
@@ -73,7 +73,7 @@ public class OrganisationController : BaseController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(int id, [FromBody] OrganisationModel model)
     {
-        int userId = User.GetUserId();
+        int userId = GetUserId();
         var updatedOrganisation = await _organisationService.UpdateOrganisationById(id, model, userId);
         if (updatedOrganisation == null)
         {
@@ -88,7 +88,7 @@ public class OrganisationController : BaseController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id)
     {
-        int userId = User.GetUserId();
+        int userId = GetUserId();
         var organisationExists = await _organisationService.GetOrganisationById(id, userId);
         if (organisationExists == null)
         {

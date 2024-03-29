@@ -2,7 +2,7 @@ using System.Security.Claims;
 
 public static class UserIdentityExtensions
 {
-    public static int GetUserId(this ClaimsPrincipal user)
+    public static int? GetUserId(this ClaimsPrincipal user)
     {
         if (user.Identity is ClaimsIdentity identity)
         {
@@ -13,6 +13,6 @@ public static class UserIdentityExtensions
             }
         }
 
-        throw new InvalidOperationException("User ID claim not present or is invalid.");
+        return null;
     }
 }
