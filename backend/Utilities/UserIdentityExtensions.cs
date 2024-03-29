@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Microsoft.Extensions.Logging;
 
 public static class UserIdentityExtensions
 {
@@ -31,5 +32,19 @@ public static class UserIdentityExtensions
         }
 
         return null;
+    }
+
+    public static IDictionary<string, string> GetAllClaims(this ClaimsPrincipal user, ILogger logger)
+    {
+        if (user.Identity is ClaimsIdentity)
+        {
+            logger.LogInformation($"Fetching all claims for the user.");
+            return user.Claims.ToDictionary(c => c.Type, c => c.Value);
+        }
+        else
+        {
+            logger.LogError("User identity is not a ClaimsIdentity or is missing.");
+            return new Dictionary<string, string>();  // Return an empty dictionary to indicate no claims are found
+        }
     }
 }

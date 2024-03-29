@@ -32,7 +32,9 @@ public class AuthController : BaseController
     public IActionResult TestUserId()
     {
         var userId = GetUserId();
-        return Ok($"User ID is: {userId}");
+        var allClaims = User.Claims.ToDictionary(c => c.Type, c => c.Value);
+
+        return Ok(new { UserId = userId, Claims = allClaims });
     }
 
     [HttpPost("register")]
