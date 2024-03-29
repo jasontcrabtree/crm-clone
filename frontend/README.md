@@ -1,3 +1,6 @@
+VSCode Debugging
+Application Event Logs
+
 When working with Docker, especially in a development environment where you might need to add or update npm packages frequently, it's important to handle package management in a way that maintains consistency between your local development environment and the Docker environment. Here’s the recommended approach:
 
 Use Docker to Manage NPM Packages
