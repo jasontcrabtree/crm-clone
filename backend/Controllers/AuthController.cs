@@ -97,11 +97,15 @@ public class AuthController : BaseController
             throw new InvalidOperationException("JWT key is not configured correctly.");
         }
 
-        // Assume jwtKey is in Base64 format to ensure we get the correct byte length
-        var keyBytes = Convert.FromBase64String(jwtKey); // Decoding from Base64 to get the actual byte array
-        if (keyBytes.Length != 32) // 256 bits = 32 bytes
+        byte[] keyBytes;
+        try
         {
-            throw new InvalidOperationException("JWT key must be 256 bits (32 bytes) long.");
+            keyBytes = Convert.FromBase64String(jwtKey); // Decoding from Base64
+        }
+        catch (FormatException ex)
+        {
+            _logger.LogError(ex, "Invalid JWT key format.");
+            throw new InvalidOperationException("JWT key format is invalid.", ex);
         }
 
         var tokenHandler = new JwtSecurityTokenHandler();
