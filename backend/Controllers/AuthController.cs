@@ -100,22 +100,22 @@ public class AuthController : BaseController
         byte[] keyBytes;
         try
         {
-            keyBytes = Convert.FromBase64String(jwtKey); // Decoding from Base64
+            keyBytes = Convert.FromBase64String(jwtKey);
         }
         catch (FormatException ex)
         {
-            _logger.LogError(ex, "Invalid JWT key format.");
-            throw new InvalidOperationException("JWT key format is invalid.", ex);
+            _logger.LogError(ex, $"Invalid JWT key format. Key: {jwtKey.Substring(0, Math.Min(10, jwtKey.Length))}...");
+            throw;
         }
 
         var tokenHandler = new JwtSecurityTokenHandler();
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new[]
-            {
+            Subject = new ClaimsIdentity(
+            [
             new Claim(ClaimTypes.Name, user.Username),
             new Claim("userId", user.Id.ToString())
-        }),
+        ]),
             Expires = DateTime.UtcNow.AddDays(7),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature)
         };
