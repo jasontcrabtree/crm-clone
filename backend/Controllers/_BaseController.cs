@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 public abstract class BaseController : ControllerBase
 {
     private readonly InteractionLoggingService _interactionLoggingService;
-    private readonly ILogger _logger;
+    private readonly ILogger<BaseController> _logger;
 
     public BaseController(InteractionLoggingService interactionLoggingService, ILogger<BaseController> logger)
     {
@@ -17,12 +17,15 @@ public abstract class BaseController : ControllerBase
 
     protected int GetUserId()
     {
-        var userId = User.GetUserId();
+        var userId = User.GetUserId(_logger);
         if (!userId.HasValue)
         {
-            var errorMessage = "User ID claim not present or is invalid.";
-            _logger.LogError(errorMessage);
-            throw new InvalidOperationException(errorMessage);
+            _logger.LogError("User ID claim not present or is invalid.");
+            throw new InvalidOperationException("User ID claim not present or is invalid.");
+        }
+        else
+        {
+            _logger.LogInformation($"Retrieved User ID: {userId.Value}");
         }
 
         return userId.Value;

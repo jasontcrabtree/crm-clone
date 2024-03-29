@@ -21,7 +21,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.RequireHttpsMetadata = false; // Set to true in production
+        options.RequireHttpsMetadata = !builder.Build().Environment.IsDevelopment();
         options.SaveToken = true;
         options.TokenValidationParameters = new TokenValidationParameters
         {
@@ -86,6 +86,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseCors("MyNextJsAppPolicy"); // Enable CORS for local development
 }
+
+
 
 app.UseSwagger();
 app.UseSwaggerUI();
