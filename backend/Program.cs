@@ -37,7 +37,8 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("MyNextJsAppPolicy", corsBuilder =>
     {
-        corsBuilder.WithOrigins("https://crm-clone.vercel.app/")
+        // corsBuilder.WithOrigins("https://crm-clone.vercel.app/")
+        corsBuilder.AllowAnyOrigin()
                    .AllowAnyHeader()
                    .AllowAnyMethod();
     });
@@ -93,6 +94,7 @@ app.UseSwaggerUI();
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
