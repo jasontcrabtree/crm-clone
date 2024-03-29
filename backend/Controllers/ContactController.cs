@@ -1,15 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
 using backend.Models;
+using Microsoft.Extensions.Logging;
 
 [ApiController]
 [Route("api/contacts")]
 public class ContactController : BaseController
 {
     private readonly IContactService _contactService;
+    private readonly ILogger<ContactController> _logger;
 
-    public ContactController(IContactService contactService)
+    public ContactController(
+        IContactService contactService,
+        InteractionLoggingService interactionLoggingService,
+        ILogger<ContactController> logger
+    ) : base(interactionLoggingService, logger)
     {
         _contactService = contactService;
+        _logger = logger;
     }
 
     [HttpGet]

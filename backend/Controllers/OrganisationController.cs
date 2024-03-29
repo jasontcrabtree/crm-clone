@@ -1,15 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
 using backend.Models;
+using Microsoft.Extensions.Logging;
 
 [ApiController]
 [Route("api/organisations")]
 public class OrganisationController : BaseController
 {
     private readonly IOrganisationService _organisationService;
+    private readonly ILogger<OrganisationController> _logger;
 
-    public OrganisationController(IOrganisationService organisationService)
+    public OrganisationController(
+        IOrganisationService organisationService,
+        InteractionLoggingService interactionLoggingService,
+        ILogger<OrganisationController> logger
+    ) : base(interactionLoggingService, logger)
     {
         _organisationService = organisationService;
+        _logger = logger;
     }
 
     [HttpGet]

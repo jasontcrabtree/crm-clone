@@ -1,17 +1,23 @@
 using Microsoft.AspNetCore.Mvc;
 using backend.Models;
+using Microsoft.Extensions.Logging;
 
 [ApiController]
 [Route("api/connections")]
 public class ConnectionController : BaseController
 {
     private readonly IConnectionService _connectionService;
+    private readonly ILogger<ConnectionController> _logger;
 
-    public ConnectionController(IConnectionService connectionService)
+    public ConnectionController(
+        IConnectionService connectionService,
+        InteractionLoggingService interactionLoggingService,
+        ILogger<ConnectionController> logger
+    ) : base(interactionLoggingService, logger)
     {
         _connectionService = connectionService;
+        _logger = logger;
     }
-
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]

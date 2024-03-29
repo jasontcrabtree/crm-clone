@@ -13,13 +13,20 @@ public class AuthController : BaseController
 {
     private readonly IConfiguration _configuration;
     private readonly AppDbContext _context;
+    private readonly ILogger<AuthController> _logger;
 
-    public AuthController(IConfiguration configuration, AppDbContext context)
+    // Update the constructor to accept the new dependencies
+    public AuthController(
+        IConfiguration configuration,
+        AppDbContext context,
+        InteractionLoggingService interactionLoggingService,
+        ILogger<AuthController> logger
+    ) : base(interactionLoggingService, logger)
     {
         _configuration = configuration;
         _context = context;
+        _logger = logger;
     }
-
 
     [HttpGet("testUserId")]
     public IActionResult TestUserId()

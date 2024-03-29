@@ -1,17 +1,24 @@
 using Microsoft.AspNetCore.Mvc;
 using backend.Models;
+using Microsoft.Extensions.Logging;
 
 [ApiController]
 [Route("api/interactions")]
-
 public class InteractionController : BaseController
 {
     private readonly IInteractionService _interactionService;
+    private readonly ILogger<InteractionController> _logger;
 
-    public InteractionController(IInteractionService interactionService)
+    public InteractionController(
+        IInteractionService interactionService,
+        InteractionLoggingService interactionLoggingService,
+        ILogger<InteractionController> logger
+    ) : base(interactionLoggingService, logger)
     {
         _interactionService = interactionService;
+        _logger = logger;
     }
+
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
