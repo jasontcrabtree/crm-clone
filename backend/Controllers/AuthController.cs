@@ -97,21 +97,26 @@ public class AuthController : BaseController
             throw new InvalidOperationException("JWT key is not configured correctly.");
         }
 
+        // Assume jwtKey is in Base64 format to ensure we get the correct byte length
+        var keyBytes = Convert.FromBase64String(jwtKey); // Decoding from Base64 to get the actual byte array
+        if (keyBytes.Length != 32) // 256 bits = 32 bytes
+        {
+            throw new InvalidOperationException("JWT key must be 256 bits (32 bytes) long.");
+        }
+
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(jwtKey);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new[]
-        {
+            {
             new Claim(ClaimTypes.Name, user.Username),
             new Claim("userId", user.Id.ToString())
         }),
             Expires = DateTime.UtcNow.AddDays(7),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature)
         };
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
     }
-
 }
