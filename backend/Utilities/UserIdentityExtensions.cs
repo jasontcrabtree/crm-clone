@@ -12,6 +12,7 @@ public static class UserIdentityExtensions
                 return userId;
             }
         }
-        return 0; // Or handle this scenario appropriately, e.g., throw an exception
+
+        throw new InvalidOperationException("User ID claim not present or is invalid.");
     }
 }

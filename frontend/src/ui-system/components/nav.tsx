@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 
-import logoutSession from "@/lib/actions/logout-session";
+import { logoutSession } from "@/lib/actions/user-management";
 import { AuthProps } from "@/lib/types/auth";
 
 import { useHistoryContext } from "./history-provider";

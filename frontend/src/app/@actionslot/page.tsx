@@ -1,6 +1,6 @@
 import ActionSlot from "@/ui-system/components/action-slot/action-slot";
 
-const OverviewActionSlot = () => {
+const Page = () => {
     return (
         <ActionSlot>
             <h2>Action Slot</h2>
@@ -8,4 +8,4 @@ const OverviewActionSlot = () => {
     )
 }
 
-export default OverviewActionSlot;
+export default Page;
