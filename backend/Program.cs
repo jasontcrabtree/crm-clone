@@ -44,6 +44,7 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddScoped<InteractionLoggingService>();
+
 builder.Services.AddLogging();
 
 builder.Services.AddScoped<IContactService, ContactService>();
