@@ -6,7 +6,6 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
 
 // Configure JWT Authentication and add Authorization
 var jwtKey = builder.Configuration["Jwt:Key"];
@@ -22,7 +21,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.RequireHttpsMetadata = app.Environment.IsProduction();
+        options.RequireHttpsMetadata = false;
         options.SaveToken = true;
         options.TokenValidationParameters = new TokenValidationParameters
         {
@@ -38,7 +37,8 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("MyNextJsAppPolicy", corsBuilder =>
     {
-        corsBuilder.WithOrigins("https://crm-clone.vercel.app/")
+        // corsBuilder.WithOrigins("https://crm-clone.vercel.app/")
+        corsBuilder.AllowAnyOrigin()
                    .AllowAnyHeader()
                    .AllowAnyMethod();
     });
@@ -57,11 +57,9 @@ builder.Services.AddAuthorization();
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.ReferenceHandler = null;
-    // options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
     options.JsonSerializerOptions.WriteIndented = true;
 });
 builder.Services.AddEndpointsApiExplorer();
-
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -80,21 +78,23 @@ builder.Services.AddDbContext<AppDbContext>(options =>
             errorNumbersToAdd: null);
     }));
 
+// Now build the app after all services have been registered
+var app = builder.Build();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseCors("MyNextJsAppPolicy"); // Enable CORS for local development
 }
-
-
 
 app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
-app.UseMiddleware<ApiMiddleware>();
 app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
