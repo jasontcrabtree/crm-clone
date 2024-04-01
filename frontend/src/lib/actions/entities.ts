@@ -73,7 +73,6 @@ export const deleteEntityById = async (id: number, entityType: EntityTypes) => {
   });
 
   revalidatePath(`/${entityType}`, 'layout');
-  // redirect(`/${entityType}`);
 
   return res;
 };

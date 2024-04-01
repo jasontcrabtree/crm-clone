@@ -9,8 +9,6 @@ export const OrgList = async (
 ) => {
     const organisations = await getAllOrganisations();
 
-    console.log('organisations', organisations)
-
     const gridSize = size === "full" ? "grid-cols-3" : "grid-cols-auto-fit";
 
     return (

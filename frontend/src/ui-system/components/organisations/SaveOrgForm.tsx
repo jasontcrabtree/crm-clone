@@ -1,16 +1,20 @@
 'use client'
 import { Button } from "../ui/button";
 import { useFormState } from "react-dom";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/ui/components/ui/select";
 import { createOrganisation } from "@/lib/actions/organisations";
 import { Organisation } from "@/lib/types/entities";
 import { updateEntityById } from "@/lib/actions/entities";
+import CustomSelect from "../ui/CustomSelect";
+
+export const orgTypes = [
+    { value: "Business", label: "Business" },
+    { value: "Government", label: "Government" },
+    { value: "NotForProfit", label: "Not For Profit" },
+    { value: "Charity", label: "Charity" },
+    { value: "Education", label: "Education" },
+    { value: "Healthcare", label: "Healthcare" },
+    { value: "Other", label: "Other" },
+];
 
 export const SaveOrgForm = async ({ organisation, ...props }: {
     organisation?: Organisation | null, props?: any
@@ -25,7 +29,7 @@ export const SaveOrgForm = async ({ organisation, ...props }: {
     const handleEditForm = async (formData: FormData) => {
         if (!organisation) throw new Error('Organisation required to edit');
 
-        const updateEntity = await updateEntityById(organisation.id, formData, 'contacts');
+        const updateEntity = await updateEntityById(organisation.id, formData, 'organisations');
 
         return updateEntity
     }
@@ -39,6 +43,8 @@ export const SaveOrgForm = async ({ organisation, ...props }: {
                     </span>
                     <input className="text-zinc-800" type="text" defaultValue={organisation?.organisationName} name="organisationName" required />
                 </label>
+
+                <CustomSelect defaultValue={organisation?.organisationType} options={orgTypes} placeholder="Select org type ..." selectLabel="Type" />
 
                 <label htmlFor="organisationWebsite">
                     <span className="font-medium">
@@ -81,19 +87,6 @@ export const SaveOrgForm = async ({ organisation, ...props }: {
                         {organisation?.organisationNotes && organisation.organisationNotes}
                     </textarea>
                 </label>
-
-                <Select>
-                    <>
-                        <SelectTrigger>
-                            <SelectValue placeholder="Select a verified email to display" />
-                        </SelectTrigger>
-                    </>
-                    <SelectContent>
-                        <SelectItem value="m@example.com">m@example.com</SelectItem>
-                        <SelectItem value="m@google.com">m@google.com</SelectItem>
-                        <SelectItem value="m@support.com">m@support.com</SelectItem>
-                    </SelectContent>
-                </Select>
 
                 <Button>{organisation ? "Edit" : "Add"}</Button>
             </form>

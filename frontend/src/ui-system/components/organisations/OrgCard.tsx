@@ -7,8 +7,6 @@ import { deleteEntityById } from "@/lib/actions/entities";
 const OrgCard = ({ organisation }: { organisation: Organisation }) => {
     const router = useRouter();
 
-    console.log('organisation', organisation)
-
     return (
         <div className="flex flex-col gap-2 border-gray-200 border-[1px] rounded p-2">
             <div className="flex flex-row gap-1 align-center">

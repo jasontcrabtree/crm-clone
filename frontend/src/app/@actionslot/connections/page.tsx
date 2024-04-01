@@ -5,6 +5,7 @@ import { SaveOrgForm } from "@/ui-system/components/organisations/SaveOrgForm";
 import { Button } from "@/ui-system/components/ui/button";
 import { XCircleIcon } from "@heroicons/react/16/solid";
 import { useActionSlotParams } from "@/hooks/useActionSlotParams";
+import { SaveConnectionForm } from "@/ui-system/components/connections/SaveConnectionForm";
 
 const Page = () => {
     const { actionState, setActionState, entity } = useActionSlotParams({ entityType: "organisations" });
@@ -13,7 +14,7 @@ const Page = () => {
         <ActionSlot>
             <div className="flex gap-6 flex-col">
                 <div className="flex flex-row w-full justify-between gap-1 items-center px-2 pb-2">
-                    <h2>Organisations</h2>
+                    <h2>Connections</h2>
                     <Button className="px-1 border-none bg-transparent shadow-none" onClick={(() => setActionState('default'))}
                     >
                         <XCircleIcon widths={24} height={24} />
@@ -27,11 +28,11 @@ const Page = () => {
                 )}
 
                 {actionState === "new" && (
-                    <SaveOrgForm />
+                    <SaveConnectionForm />
                 )}
 
                 {actionState === "edit" && (
-                    <SaveOrgForm organisation={entity} />
+                    <SaveConnectionForm connection={entity} />
                 )}
             </div>
         </ActionSlot>

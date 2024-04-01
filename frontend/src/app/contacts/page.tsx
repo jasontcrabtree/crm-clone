@@ -49,7 +49,7 @@ const Page = async () => {
                 <EntityStats />
                 <EntitySearch label="Search Contacts" />
             </div>
-            {/* <ContactsList size="full" length={32} /> */}
+            <ContactsList size="full" length={32} />
         </div>
     )
 }
