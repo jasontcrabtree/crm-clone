@@ -13,6 +13,7 @@ export const getAllContacts = async () => {
     method: 'GET',
     url: `${apiEndpoint}/contacts`,
   });
+
   return data;
 };
 

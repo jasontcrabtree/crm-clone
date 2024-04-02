@@ -6,7 +6,7 @@ public interface IContactService
     Task<bool> ContactExists(string contactEmail);
     Task<ContactModel> CreateContact(ContactModel contactModel, int userId);
     Task<ContactModel?> GetContactById(int id, int userId);
-    Task<IEnumerable<ContactModel>> GetAllContacts(int userId, int pageNumber, int pageSize);
+    Task<(IEnumerable<ContactModel>, int)> GetAllContacts(int userId, int pageNumber, int pageSize);
     Task<ContactModel?> UpdateContactById(int id, ContactModel model, int userId);
     Task DeleteContactById(int id, int userId);
 }
@@ -38,14 +38,26 @@ public class ContactService : IContactService
         return contactModel;
     }
 
-    public async Task<IEnumerable<ContactModel>> GetAllContacts(int UserId, int pageNumber, int pageSize)
+    // public async Task<IEnumerable<ContactModel>> GetAllContacts(int UserId, int pageNumber, int pageSize)
+    public async Task<(IEnumerable<ContactModel>, int)> GetAllContacts(int userId, int pageNumber, int pageSize)
     {
-        return await _context.Contacts
-                .Where(contact => contact.UserId == UserId)
-                .OrderByDescending(c => c.Id)
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
+        // return await _context.Contacts
+        //         .Where(contact => contact.UserId == UserId)
+        //         .OrderByDescending(c => c.Id)
+        //         .Skip((pageNumber - 1) * pageSize)
+        //         .Take(pageSize)
+        //         .ToListAsync();
+        var query = _context.Contacts.Where(contact => contact.UserId == userId);
+
+        int totalCount = await query.CountAsync();
+
+        var items = await query
+            .OrderByDescending(c => c.Id)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return (items, totalCount);
     }
 
     public async Task<ContactModel?> GetContactById(int id, int userId)

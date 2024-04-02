@@ -68,7 +68,7 @@ const AppNav = ({ session, user }: AuthProps) => {
     const { history } = useHistoryContext();
 
     return (
-        <nav className={`bg-slate-200 w-full sm:min-w-24 sm:max-w-48 sm:h-screen gap-6  pt-10 px-3 max-h-screen h-full flex flex-col content-start`}>
+        <nav className={`bg-slate-200 w-full sm:min-w-24 sm:max-w-48 sm:h-screen gap-6  pt-6 px-3 max-h-screen h-full flex flex-col content-start`}>
             <span className="text-xl font-bold px-1 text-rose-600 flex flex-row gap-2 items-center">
                 <LogoIcon />
                 Bondbridge

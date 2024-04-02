@@ -62,9 +62,9 @@ export const fetchUtil = async ({
     return null;
   }
 
-  const { data } = await apiRes.json();
+  const { data, total } = await apiRes.json();
 
-  return data;
+  return { data, total };
 };
 
 export const convertFormDataToJson = (formData: FormData) => {

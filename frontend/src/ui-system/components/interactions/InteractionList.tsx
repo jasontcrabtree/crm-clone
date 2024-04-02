@@ -11,9 +11,11 @@ export const InteractionList = async (
     const gridSize = size === "full" ? "grid-cols-3" : "grid-cols-auto-fit";
 
     return (
-        <div className="p-4 bg-zinc-100">
-            <h2 className="text-lg">Interactions</h2>
-            <div className={`grid md:${gridSize} gap-2 p-2`}>
+        <div className="bg-transparent rounded-[8px]">
+            {length < 7 &&
+                <h2 className="text-lg font-semibold pb-2 text-zinc-700">Interactions</h2>
+            }
+            <div className={`flex flex-col gap-3`}>
                 {interactions.slice(0, length).map((organisation: any) => {
                     return (
                         <InteractionCard

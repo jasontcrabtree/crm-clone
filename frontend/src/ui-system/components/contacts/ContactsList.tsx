@@ -7,15 +7,17 @@ import ContactCard from "./ContactCard";
 export const ContactsList = async (
     { size, length = 7 }: { size: string, length?: number }
 ) => {
-    const contacts = await getAllContacts();
+    const { data, total } = await getAllContacts() as { data: Contact[], total: number };
 
     const gridSize = size === "full" ? "grid-cols-3" : "grid-cols-auto-fit";
 
     return (
-        <div className="p-4 bg-zinc-100">
-            <h2 className="text-lg">Contacts</h2>
-            <div className={`grid md:${gridSize} gap-2 p-2`}>
-                {contacts.slice(0, length).map((contact: Contact) => {
+        <div className="p-3 bg-zinc-100 rounded-[8px]">
+            {length < 7 &&
+                <h2 className="text-lg font-semibold pb-2 text-zinc-700">Contacts</h2>
+            }
+            <div className={`grid md:${gridSize} gap-2`}>
+                {data.slice(0, length).map((contact: Contact) => {
                     return (
                         <ContactCard
                             key={contact.id}

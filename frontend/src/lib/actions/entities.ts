@@ -24,10 +24,14 @@ export const createEntity = async (
   return newEntity;
 };
 
+// infer return type as data and total in respose
 export const getAllEntityItems = async (entityType: EntityTypes) => {
   noStore();
 
-  const data = await fetchUtil({
+  const res: {
+    data: Contact[];
+    total: number;
+  } | null = await fetchUtil({
     method: 'GET',
     url:
       entityType === 'connections'
@@ -35,7 +39,7 @@ export const getAllEntityItems = async (entityType: EntityTypes) => {
         : `${apiEndpoint}/${entityType}`,
   });
 
-  return data;
+  return res;
 };
 
 export const getEntityById = async (id: number, entityType: EntityTypes) => {

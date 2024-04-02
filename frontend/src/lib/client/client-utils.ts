@@ -27,6 +27,11 @@ export const formatUrlToReadable = (item: string) => {
   return convertToTitleCase;
 };
 
+export function formatDate(dateString: string): string {
+  const dateParts = dateString.split('-');
+  return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+}
+
 export const displayOrganisationType = (organisationTypeId: number) => {
   switch (organisationTypeId) {
     case 0:
