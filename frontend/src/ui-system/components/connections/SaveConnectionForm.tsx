@@ -1,4 +1,5 @@
-'use client'
+'use client';
+
 import { Button } from "../ui/button";
 import { useFormState } from "react-dom";
 import {
@@ -9,14 +10,17 @@ import {
     SelectValue,
 } from "@/ui/components/ui/select";
 import { createConnection } from "@/lib/actions/connections";
-import { Connection, ConnectionType } from "@/lib/types/entities";
+import { Connection, Contact, Organisation } from "@/lib/types/entities";
 import { updateEntityById } from "@/lib/actions/entities";
 import CustomSelect from "../ui/CustomSelect";
 import { ContactConnectionDropdown, OrganisationConnectionDropdown } from "./ConnectionDropdowns";
 
-export const SaveConnectionForm = async ({ connection, ...props }: {
-    connection?: Connection | null, props?: any
-}) => {
+export const SaveConnectionForm = ({ connection, contacts, organisations }
+    : {
+        connection?: Connection | null,
+        contacts: Contact[],
+        organisations: Organisation[],
+    }) => {
     const initialState: any = {
         message: null,
         errors: {}
@@ -51,25 +55,11 @@ export const SaveConnectionForm = async ({ connection, ...props }: {
                     <input className="text-zinc-800" type="text" defaultValue={connection?.connectionLabel} name="connectionLabel" required />
                 </label>
 
+                <CustomSelect options={connectionTypes} placeholder="Choose connection" selectLabel="Type" defaultValue={connection?.connectionType} />
 
-                <CustomSelect options={connectionTypes} placeholder="Choose connection" selectLabel="Connection Type" defaultValue={connection?.connectionType} />
+                <ContactConnectionDropdown contactData={contacts} />
 
-                <ContactConnectionDropdown />
-
-                <OrganisationConnectionDropdown />
-
-                <Select>
-                    <>
-                        <SelectTrigger>
-                            <SelectValue placeholder="Select a verified email to display" />
-                        </SelectTrigger>
-                    </>
-                    <SelectContent>
-                        <SelectItem value="m@example.com">m@example.com</SelectItem>
-                        <SelectItem value="m@google.com">m@google.com</SelectItem>
-                        <SelectItem value="m@support.com">m@support.com</SelectItem>
-                    </SelectContent>
-                </Select>
+                <OrganisationConnectionDropdown organisationData={organisations} />
 
                 <Button>{connection ? "Edit" : "Add"}</Button>
             </form>

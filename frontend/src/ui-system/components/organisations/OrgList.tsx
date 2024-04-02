@@ -12,15 +12,18 @@ export const OrgList = async (
     const gridSize = size === "full" ? "grid-cols-3" : "grid-cols-auto-fit";
 
     return (
-        <div className={`grid md:${gridSize} gap-2 p-2`}>
-            {organisations.slice(0, length).map((organisation: Organisation) => {
-                return (
-                    <OrgCard
-                        key={organisation.id}
-                        organisation={organisation}
-                    />
-                )
-            })}
+        <div className="p-4 bg-zinc-100">
+            <h2 className="text-lg">Organisations</h2>
+            <div className={`grid md:${gridSize} gap-2 p-2`}>
+                {organisations.slice(0, length).map((organisation: Organisation) => {
+                    return (
+                        <OrgCard
+                            key={organisation.id}
+                            organisation={organisation}
+                        />
+                    )
+                })}
+            </div>
         </div>
     )
 }

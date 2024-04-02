@@ -1,4 +1,4 @@
-import { ContactConnectionDropdown, OrganisationConnectionDropdown } from "@/ui-system/components/connections/ConnectionDropdowns";
+import ConnectionList from "@/ui-system/components/connections/ConnectionList";
 import NewConnectionButton from "@/ui-system/components/connections/NewConnectionButton";
 
 const Page = () => {
@@ -9,7 +9,7 @@ const Page = () => {
                 <div className="flex flex-row justify-between gap-2 w-full p-4">
                     <h1 className="text-xl font-bold
             text-teal-700">
-                        Connections
+                        Connections!
                     </h1>
                     <NewConnectionButton />
                 </div>
@@ -18,7 +18,7 @@ const Page = () => {
                     <EntityStats />
                     <EntitySearch label="Search Contacts" /> */}
                 </div>
-                {/* <ContactsList size="full" length={32} /> */}
+                <ConnectionList size="full" length={32} />
             </div>
         </div>
     )

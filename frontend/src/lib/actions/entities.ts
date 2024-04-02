@@ -29,7 +29,10 @@ export const getAllEntityItems = async (entityType: EntityTypes) => {
 
   const data = await fetchUtil({
     method: 'GET',
-    url: `${apiEndpoint}/${entityType}`,
+    url:
+      entityType === 'connections'
+        ? `${apiEndpoint}/${entityType}/aggregate`
+        : `${apiEndpoint}/${entityType}`,
   });
 
   return data;

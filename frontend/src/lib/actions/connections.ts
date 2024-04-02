@@ -1,10 +1,4 @@
-/*
-Connection endpoint works with the following data:
-label and type are required
-id of different entities to create the connection (multiple connections supported)
-connectionType enums:
-[ Employee, ExternalPartner, Stakeholder, Customer, Referral, Custom ]
-*/
+'use server';
 
 import { unstable_noStore as noStore, revalidatePath } from 'next/cache';
 import { fetchUtil } from '../server/server-utils';
@@ -34,6 +28,8 @@ export const getConnectionById = async (id: number) => {
 };
 
 export const createConnection = async (prevState: null, formData: FormData) => {
+  noStore();
+
   const data = await createEntity(formData, 'connections');
   revalidatePath('/connections', 'layout');
 
