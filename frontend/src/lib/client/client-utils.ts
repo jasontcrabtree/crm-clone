@@ -26,3 +26,41 @@ export const formatUrlToReadable = (item: string) => {
 
   return convertToTitleCase;
 };
+
+export const displayOrganisationType = (organisationTypeId: number) => {
+  switch (organisationTypeId) {
+    case 0:
+      return 'Business';
+    case 1:
+      return 'Government';
+    case 2:
+      return 'NotForProfit';
+    case 3:
+      return 'Charity';
+    case 4:
+      return 'Education';
+    case 5:
+      return 'Healthcare';
+    case 6:
+      return 'Other';
+  }
+};
+
+export const displayConnectionType = (connectionTypeId: number) => {
+  switch (connectionTypeId) {
+    case 0:
+      return 'Employee';
+    case 1:
+      return 'External Partner';
+    case 2:
+      return 'Stakeholder';
+    case 3:
+      return 'Customer';
+    case 4:
+      return 'Referral';
+    case 5:
+      return 'Custom';
+    default:
+      return 'Unknown';
+  }
+};

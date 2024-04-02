@@ -16,19 +16,29 @@ export type Connection = {
   id: number;
   connectionType: string;
   connectionValue: string;
-  contactId: number;
+  connectionLabel: string;
   createdTimeUnix: number;
   updatedTimeUnix: number;
+
+  contactId?: number;
+  interactionId?: number;
+  organisationId?: number;
+
+  contactModel?: any;
+  contactDetails?: Contact;
+  interactionModel?: any;
+  interactionDetails?: any;
+  organisationModel?: any;
+  organisationDetails?: Organisation;
 };
 
-export enum EnumOrganisationType {
-  Business,
-  Government,
-  NotForProfit,
-  Charity,
-  Education,
-  Healthcare,
-  Other,
+export enum ConnectionType {
+  Employee = 0,
+  ExternalPartner = 1,
+  Stakeholder = 2,
+  Customer = 3,
+  Referral = 4,
+  Custom = 5,
 }
 
 export type Organisation = {
@@ -43,3 +53,12 @@ export type Organisation = {
   organisationType: EnumOrganisationType;
   userId: number;
 };
+
+export type EnumOrganisationType =
+  | 'Business'
+  | 'Government'
+  | 'NotForProfit'
+  | 'Charity'
+  | 'Education'
+  | 'Healthcare'
+  | 'Other';

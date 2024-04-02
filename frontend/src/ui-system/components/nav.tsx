@@ -99,12 +99,12 @@ const AppNav = ({ session, user }: AuthProps) => {
                         Organisations
                     </NavLinkitem>
                 </li>
-                {/* <li>
+                <li>
                     <NavLinkitem href="/connections">
                         <ArrowPathIcon className="w-6" />
                         Connections
                     </NavLinkitem>
-                </li> */}
+                </li>
                 {/* <li>
                     <NavLinkitem href="/messages">
                         <ChatBubbleLeftIcon className="w-6" />

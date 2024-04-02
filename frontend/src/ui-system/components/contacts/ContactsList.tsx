@@ -12,15 +12,18 @@ export const ContactsList = async (
     const gridSize = size === "full" ? "grid-cols-3" : "grid-cols-auto-fit";
 
     return (
-        <div className={`grid md:${gridSize} gap-2 p-2`}>
-            {contacts.slice(0, length).map((contact: Contact) => {
-                return (
-                    <ContactCard
-                        key={contact.id}
-                        contact={contact}
-                    />
-                )
-            })}
+        <div className="p-4 bg-zinc-100">
+            <h2 className="text-lg">Contacts</h2>
+            <div className={`grid md:${gridSize} gap-2 p-2`}>
+                {contacts.slice(0, length).map((contact: Contact) => {
+                    return (
+                        <ContactCard
+                            key={contact.id}
+                            contact={contact}
+                        />
+                    )
+                })}
+            </div>
         </div>
     )
 }

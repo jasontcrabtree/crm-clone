@@ -6,17 +6,7 @@ import { Organisation } from "@/lib/types/entities";
 import { updateEntityById } from "@/lib/actions/entities";
 import CustomSelect from "../ui/CustomSelect";
 
-export const orgTypes = [
-    { value: "Business", label: "Business" },
-    { value: "Government", label: "Government" },
-    { value: "NotForProfit", label: "Not For Profit" },
-    { value: "Charity", label: "Charity" },
-    { value: "Education", label: "Education" },
-    { value: "Healthcare", label: "Healthcare" },
-    { value: "Other", label: "Other" },
-];
-
-export const SaveOrgForm = async ({ organisation, ...props }: {
+export const SaveInteractionForm = async ({ organisation, ...props }: {
     organisation?: Organisation | null, props?: any
 }) => {
     const initialState: any = {
@@ -43,8 +33,6 @@ export const SaveOrgForm = async ({ organisation, ...props }: {
                     </span>
                     <input className="text-zinc-800" type="text" defaultValue={organisation?.organisationName} name="organisationName" required />
                 </label>
-
-                <CustomSelect defaultValue={organisation?.organisationType} options={orgTypes} placeholder="Select org type ..." selectLabel="Type" />
 
                 <label htmlFor="organisationWebsite">
                     <span className="font-medium">
