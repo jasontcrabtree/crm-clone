@@ -7,7 +7,7 @@ import OrgCard from "./OrgCard";
 export const OrgList = async (
     { size, length = 7 }: { size: string, length?: number }
 ) => {
-    const organisations = await getAllOrganisations();
+    const { data, total } = await getAllOrganisations() as { data: Organisation[], total: number };
 
     const gridSize = size === "full" ? "grid-cols-3" : "grid-cols-auto-fit";
 
@@ -17,7 +17,7 @@ export const OrgList = async (
                 <h2 className="text-lg font-semibold pb-2 text-zinc-700">Organisations</h2>
             }
             <div className={`grid md:${gridSize} gap-2 p-2`}>
-                {organisations.slice(0, length).map((organisation: Organisation) => {
+                {data.slice(0, length).map((organisation: Organisation) => {
                     return (
                         <OrgCard
                             key={organisation.id}

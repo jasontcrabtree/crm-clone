@@ -62,8 +62,13 @@ export const fetchUtil = async ({
     return null;
   }
 
-  const { data, total } = await apiRes.json();
+  const res = await apiRes.json();
 
+  if (!res.total) {
+    return res;
+  }
+
+  const { data, total } = res;
   return { data, total };
 };
 

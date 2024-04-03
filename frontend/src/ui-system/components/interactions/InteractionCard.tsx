@@ -5,23 +5,9 @@ import { useRouter } from "next/navigation";
 import { deleteEntityById } from "@/lib/actions/entities";
 import { Interaction } from "@/lib/types/entities";
 import { formatDate } from "@/lib/client/client-utils"
-import { UserGroupIcon, BuildingOffice2Icon, ArrowPathIcon } from "@heroicons/react/24/outline";
+import RenderEntityIcon from "../entities/RenderEntityIcon";
 
-
-function getEntityIcon(interaction: { entityType: string }): JSX.Element {
-    switch (interaction.entityType) {
-        case 'ContactModel':
-            return <UserGroupIcon className="w-5" />
-        case 'OrganisationModel':
-            return <BuildingOffice2Icon className="w-5" />
-        case 'ConnectionModel':
-            return <ArrowPathIcon className="w-5" />
-        default:
-            return <></>
-    }
-};
-
-const InteractionCard = ({ interaction }: { interaction: Interaction }) => {
+export const InteractionCard = ({ interaction }: { interaction: Interaction }) => {
     const router = useRouter();
 
     return (
@@ -38,7 +24,7 @@ const InteractionCard = ({ interaction }: { interaction: Interaction }) => {
             <div className="flex flex-row gap-2 content-center w-full flex-start flex-wrap">
                 {interaction?.entityType && (
                     <p className="text-zinc-500">
-                        {getEntityIcon({ entityType: interaction.entityType })}
+                        <RenderEntityIcon entityType={interaction.entityType} />
                     </p>
                 )}
 
@@ -65,5 +51,3 @@ const InteractionCard = ({ interaction }: { interaction: Interaction }) => {
         </div>
     )
 }
-
-export default InteractionCard;

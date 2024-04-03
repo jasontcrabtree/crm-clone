@@ -17,6 +17,17 @@ export const getAllContacts = async () => {
   return data;
 };
 
+export const getAllContactInteractions = async () => {
+  noStore();
+
+  const data = await fetchUtil({
+    method: 'GET',
+    url: `${apiEndpoint}/interactions/entity/ContactModel`,
+  });
+
+  return data;
+};
+
 export const getContactById = async (id: number) => {
   noStore();
 

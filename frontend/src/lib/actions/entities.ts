@@ -29,7 +29,7 @@ export const getAllEntityItems = async (entityType: EntityTypes) => {
   noStore();
 
   const res: {
-    data: Contact[];
+    data: any[];
     total: number;
   } | null = await fetchUtil({
     method: 'GET',

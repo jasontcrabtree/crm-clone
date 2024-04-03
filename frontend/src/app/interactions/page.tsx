@@ -1,7 +1,13 @@
+'use server'
 import { InteractionList } from "@/ui-system/components/interactions/InteractionList";
 import NewInteractionButton from "@/ui-system/components/interactions/NewInteractionButton";
+import { getAllEntityItems } from "@/lib/actions/entities";
+import { Interaction } from "@/lib/types/entities";
 
-const Page = () => {
+const Page = async () => {
+
+    const { data, total } = await getAllEntityItems('interactions') as { data: Interaction[], total: number };
+
     return (
         <div className={`w-full bg-zinc-50 max-h-screen overflow-y-scroll`}>
             <div className="flex flex-row justify-between gap-2 w-full p-4">
@@ -16,7 +22,7 @@ const Page = () => {
                 <EntityStats />
                 <EntitySearch label="Search Contacts" /> */}
             </div>
-            <InteractionList size="full" length={32} />
+            <InteractionList length={32} items={data} />
         </div>
     )
 }
