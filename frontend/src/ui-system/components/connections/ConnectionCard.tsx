@@ -15,7 +15,7 @@ const ConnectionCard = ({ connection }: { connection: Connection }) => {
                 <Button onClick={() => router.push(`/connections?edit=${connection.id}`)}>
                     Edit
                 </Button>
-                <Button onClick={(() => deleteEntityById(connection.id, 'connections'))}>
+                <Button className="bg-zinc-100 border-red-700 text-red-700 hover:bg-red-700 hover:text-white" onClick={(() => deleteEntityById(connection.id, 'connections'))}>
                     Delete
                 </Button>
             </div>

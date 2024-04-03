@@ -13,7 +13,7 @@ const OrgCard = ({ organisation }: { organisation: Organisation }) => {
                 <Button onClick={() => router.push(`/organisations?edit=${organisation.id}`)}>
                     Edit
                 </Button>
-                <Button onClick={(() => deleteEntityById(organisation.id, 'organisations'))}>
+                <Button className="bg-zinc-100 border-red-700 text-red-700 hover:bg-red-700 hover:text-white" onClick={(() => deleteEntityById(organisation.id, 'organisations'))}>
                     Delete
                 </Button>
             </div>

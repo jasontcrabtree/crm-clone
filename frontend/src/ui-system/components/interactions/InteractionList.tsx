@@ -1,24 +1,22 @@
-'use server';
+import { Contact, Interaction, Organisation } from "@/lib/types/entities";
+import { InteractionCard } from "./InteractionCard";
 
-import InteractionCard from "./InteractionCard";
-import { getAllEntityItems } from "@/lib/actions/entities";
-
-export const InteractionList = async (
-    { size, length = 7 }: { size: string, length?: number }
+export const InteractionList = (
+    { items, length = 7 }: { items: any, length?: number }
 ) => {
-    const interactions = await getAllEntityItems('interactions');
-
-    const gridSize = size === "full" ? "grid-cols-3" : "grid-cols-auto-fit";
-
     return (
-        <div className="p-4 bg-zinc-100">
-            <h2 className="text-lg">Interactions</h2>
-            <div className={`grid md:${gridSize} gap-2 p-2`}>
-                {interactions.slice(0, length).map((organisation: any) => {
+        <div className="bg-transparent rounded-[8px]">
+            {length < 7 &&
+                <h2 className="text-lg font-semibold pb-2 text-zinc-700">
+                    Interactions
+                </h2>
+            }
+            <div className={`flex flex-col gap-3`}>
+                {items?.slice(0, length).map((item: any) => {
                     return (
                         <InteractionCard
-                            key={organisation.id}
-                            interaction={organisation}
+                            key={item.id}
+                            interaction={item}
                         />
                     )
                 })}

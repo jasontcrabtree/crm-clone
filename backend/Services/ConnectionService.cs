@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 public interface IConnectionService
 {
     // Task<bool> ConnectionExists(string connectionName);
-    Task<IEnumerable<ConnectionModel>> GetAllConnections(int userId, int pageNumber, int pageSize);
+    Task<(IEnumerable<ConnectionModel>, int)> GetAllConnections(int userId, int pageNumber, int pageSize);
     Task<ConnectionModel> CreateConnection(ConnectionModel connectionModel, int userId);
     Task<ConnectionModel?> GetConnectionById(int id, int userId);
     Task<ConnectionModel?> UpdateConnectionById(int id, ConnectionModel connectionModel, int userId);
@@ -47,14 +47,25 @@ public class ConnectionService : BaseService, IConnectionService
         return connectionModel;
     }
 
-    public async Task<IEnumerable<ConnectionModel>> GetAllConnections(int userId, int pageNumber, int pageSize)
+    public async Task<(IEnumerable<ConnectionModel>, int)> GetAllConnections(int userId, int pageNumber, int pageSize)
     {
-        return await _context.Connections
-                    .Where(connection => connection.UserId == UserId)
-                    .OrderByDescending(c => c.Id)
-                    .Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToListAsync();
+        // return await _context.Connections
+        //             .Where(connection => connection.UserId == UserId)
+        //             .OrderByDescending(c => c.Id)
+        //             .Skip((pageNumber - 1) * pageSize)
+        //             .Take(pageSize)
+        //             .ToListAsync();
+        var query = _context.Connections.Where(contact => contact.UserId == userId);
+
+        int totalCount = await query.CountAsync();
+
+        var items = await query
+            .OrderByDescending(c => c.Id)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return (items, totalCount);
     }
 
     public async Task<ConnectionModel?> GetConnectionById(int id, int userId)

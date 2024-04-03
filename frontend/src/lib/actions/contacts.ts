@@ -13,6 +13,18 @@ export const getAllContacts = async () => {
     method: 'GET',
     url: `${apiEndpoint}/contacts`,
   });
+
+  return data;
+};
+
+export const getAllContactInteractions = async () => {
+  noStore();
+
+  const data = await fetchUtil({
+    method: 'GET',
+    url: `${apiEndpoint}/interactions/entity/ContactModel`,
+  });
+
   return data;
 };
 

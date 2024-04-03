@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 public interface IOrganisationService
 {
     Task<bool> OrganisationExists(string organisationName);
-    Task<IEnumerable<OrganisationModel>> GetAllOrganisations(int userId, int pageNumber, int pageSize);
+    Task<(IEnumerable<OrganisationModel>, int)> GetAllOrganisations(int userId, int pageNumber, int pageSize);
     Task<OrganisationModel> CreateOrganisation(OrganisationModel organisationModel, int userId);
     Task<OrganisationModel?> GetOrganisationById(int id, int userId);
     Task<OrganisationModel?> UpdateOrganisationById(int id, OrganisationModel organisationModel, int userId);
@@ -27,20 +27,8 @@ public class OrganisationService : IOrganisationService
 
     public async Task<OrganisationModel> CreateOrganisation(OrganisationModel organisationModel, int userId)
     {
-
         // First, ensure that the user with the given userId exists and is tracked.
         var user = await _context.Users.FindAsync(userId) ?? throw new Exception("User does not exist.");
-
-        // var organisation = new OrganisationModel
-        // {
-        //     OrganisationName = organisationModel.OrganisationName,
-        //     OrganisationAddress = organisationModel.OrganisationAddress,
-        //     OrganisationCity = organisationModel.OrganisationCity,
-        //     OrganisationCountry = organisationModel.OrganisationCountry,
-        //     OrganisationNotes = organisationModel.OrganisationNotes,
-        //     OrganisationPhone = organisationModel.OrganisationPhone,
-        //     OrganisationWebsite = organisationModel.OrganisationWebsite
-        // };
 
         organisationModel.UserId = user.Id;
 
@@ -50,14 +38,25 @@ public class OrganisationService : IOrganisationService
         return organisationModel;
     }
 
-    public async Task<IEnumerable<OrganisationModel>> GetAllOrganisations(int userId, int pageNumber, int pageSize)
+    public async Task<(IEnumerable<OrganisationModel>, int)> GetAllOrganisations(int userId, int pageNumber, int pageSize)
     {
-        return await _context.Organisations
-                    .Where(organisation => organisation.UserId == userId)
-                    .OrderByDescending(c => c.Id)
-                    .Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToListAsync();
+        // return await _context.Organisations
+        //             .Where(organisation => organisation.UserId == userId)
+        //             .OrderByDescending(c => c.Id)
+        //             .Skip((pageNumber - 1) * pageSize)
+        //             .Take(pageSize)
+        //             .ToListAsync();
+        var query = _context.Organisations.Where(contact => contact.UserId == userId);
+
+        int totalCount = await query.CountAsync();
+
+        var items = await query
+            .OrderByDescending(c => c.Id)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return (items, totalCount);
     }
 
     public async Task<OrganisationModel?> GetOrganisationById(int id, int userId)

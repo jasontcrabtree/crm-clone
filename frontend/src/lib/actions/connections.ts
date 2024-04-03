@@ -16,6 +16,17 @@ export const getAllConnectionsByAggregate = async () => {
   return data;
 };
 
+export const getAllConnectionInterations = async () => {
+  noStore();
+
+  const data = await fetchUtil({
+    method: 'GET',
+    url: `${apiEndpoint}/interactions/entity/ConnectionModel`,
+  });
+
+  return data;
+};
+
 export const getConnectionById = async (id: number) => {
   noStore();
 

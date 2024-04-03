@@ -8,11 +8,7 @@ export const EditContactForm = ({ contact }: { contact: Contact | null }) => {
     const handleEditForm = async (formData: FormData) => {
         if (!contact) throw new Error('Contact required');
 
-        console.log('formData', formData)
-
         const update = await updateEntityById(contact.id, formData, 'contacts');
-
-        console.log('update', update);
     }
 
     return (

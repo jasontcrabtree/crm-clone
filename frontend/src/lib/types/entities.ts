@@ -62,3 +62,55 @@ export type EnumOrganisationType =
   | 'Education'
   | 'Healthcare'
   | 'Other';
+
+type InteractionType =
+  | 'ContactCreated'
+  | 'ContactUpdated'
+  | 'ContactDeleted'
+  | 'OrganisationCreated'
+  | 'OrganisationUpdated'
+  | 'OrganisationDeleted'
+  | 'ConnectionCreated'
+  | 'ConnectionUpdated'
+  | 'ConnectionDeleted'
+  | 'InteractionCreated'
+  | 'InteractionUpdated'
+  | 'InteractionDeleted'
+  | 'MessageCreated'
+  | 'MessageUpdated'
+  | 'MessageDeleted'
+  | 'RemoteMeeting'
+  | 'InPersonMeeting'
+  | 'Phonecall'
+  | 'Email'
+  | 'Text'
+  | 'Conference'
+  | 'Adhoc'
+  | 'Sale'
+  | 'Discovery'
+  | 'Demo'
+  | 'Collaboration'
+  | 'Training'
+  | 'Partnership'
+  | 'Presentation'
+  | 'Mentorship'
+  | 'Education'
+  | 'Contract'
+  | 'CustomerService'
+  | 'Dispute'
+  | 'Other';
+
+export type Interaction = {
+  id: number;
+  createdTimeUnix: number;
+  updatedTimeUnix: number;
+  interactionDate: string;
+  interactionTitle?: string;
+  interactionNotes?: string;
+  detailedData?: string;
+  interactionType: InteractionType;
+  customInteractionType?: string;
+  entityType?: string;
+  entityId?: number;
+  userId?: number;
+};

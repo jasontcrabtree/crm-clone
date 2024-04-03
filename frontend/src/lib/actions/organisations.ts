@@ -16,6 +16,17 @@ export const getAllOrganisations = async () => {
   return data;
 };
 
+export const getAllOrganisationInteractions = async () => {
+  noStore();
+
+  const data = await fetchUtil({
+    method: 'GET',
+    url: `${apiEndpoint}/interactions/entity/OrganisationModel`,
+  });
+
+  return data;
+};
+
 export const getOrganisationById = async (id: number) => {
   noStore();
 

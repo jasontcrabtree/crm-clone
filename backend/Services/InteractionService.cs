@@ -4,13 +4,15 @@ using Microsoft.EntityFrameworkCore;
 public interface IInteractionService
 {
     Task<bool> InteractionExists(string interactionName);
-    Task<IEnumerable<InteractionModel>> GetAllInteractions(int userId, int pageNumber, int pageSize);
+    Task<(IEnumerable<InteractionModel>, int)> GetAllInteractions(int userId, int pageNumber, int pageSize);
     Task<InteractionModel> CreateInteraction(InteractionModel interactionModel, int userId);
     Task<InteractionModel?> GetInteractionById(int id, int userId);
     Task<InteractionModel?> UpdateInteractionById(int id, InteractionModel interactionModel, int userId);
     Task DeleteInteractionById(int id, int userId);
     Task<IEnumerable<InteractionModel>> GetUserInteractionsForEntityAsync(string entityType, int entityId, int userId);
-    Task<IEnumerable<InteractionModel>> GetAllUserInteractionsAsync(int userId);
+    Task<IEnumerable<InteractionModel>> GetUserInteractionsForEntityTypeAsync(string entityType, int userId);
+
+    // Task<IEnumerable<InteractionModel>> GetAllUserInteractionsAsync(int userId);
 }
 
 public class InteractionService : IInteractionService
@@ -40,14 +42,25 @@ public class InteractionService : IInteractionService
         return interactionModel;
     }
 
-    public async Task<IEnumerable<InteractionModel>> GetAllInteractions(int userId, int pageNumber, int pageSize)
+    public async Task<(IEnumerable<InteractionModel>, int)> GetAllInteractions(int userId, int pageNumber, int pageSize)
     {
-        return await _context.Interactions
-            .Where(i => i.UserId == userId)
-            .OrderByDescending(i => i.InteractionDate)
+        // return await _context.Interactions
+        //     .Where(i => i.UserId == userId)
+        //     .OrderByDescending(i => i.InteractionDate)
+        //     .Skip((pageNumber - 1) * pageSize)
+        //     .Take(pageSize)
+        //     .ToListAsync();
+        var query = _context.Interactions.Where(contact => contact.UserId == userId);
+
+        int totalCount = await query.CountAsync();
+
+        var items = await query
+            .OrderByDescending(c => c.Id)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
+
+        return (items, totalCount);
     }
 
     public async Task<InteractionModel?> GetInteractionById(int id, int userId)
@@ -91,10 +104,18 @@ public class InteractionService : IInteractionService
              .ToListAsync();
     }
 
-    public async Task<IEnumerable<InteractionModel>> GetAllUserInteractionsAsync(int userId)
+    public async Task<IEnumerable<InteractionModel>> GetUserInteractionsForEntityTypeAsync(string entityType, int userId)
     {
         return await _context.Interactions
-            .Where(i => i.UserId == userId)
-            .ToListAsync();
+             .Where(i => i.EntityType.Equals(entityType)
+                         && i.UserId == userId)
+             .ToListAsync();
     }
+
+    // public async Task<IEnumerable<InteractionModel>> GetAllUserInteractionsAsync(int userId)
+    // {
+    //     return await _context.Interactions
+    //         .Where(i => i.UserId == userId)
+    //         .ToListAsync();
+    // }
 }
